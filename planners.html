@@ -177,6 +177,12 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 .head-text h1{font-size:38px;font-weight:500;line-height:1.1;margin-bottom:8px}
 .head-text p{font-size:18px;color:#555;max-width:640px}
 @media (max-width:900px){.shop{grid-template-columns:minmax(0,1fr) !important;margin-top:18px}.head-wheel{width:100%;flex:0 0 100%;max-width:none;display:flex;justify-content:center;margin:0 0 10px}.head-wheel img{width:150px}.cats{align-items:flex-start}.cats{justify-content:center}.cat{flex:none}.head-text h1{font-size:26px}}
+
+.top-row{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:center;margin-top:26px;padding-bottom:22px;border-bottom:1px solid #e5e5e5}
+.top-row .head-wheel{margin:0}
+.top-row .head-text{margin:0}
+.shop{margin-top:26px !important}
+@media (max-width:900px){.top-row{grid-template-columns:110px minmax(0,1fr);gap:16px}.top-row .head-wheel{width:110px;flex:none;display:block;margin:0}.top-row .head-wheel img{width:110px}}
 </style>
 </head>
 <body>
@@ -190,9 +196,15 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 </div></header>
 
 <div class="container">
+  <div class="top-row" id="about">
+    <a class="head-wheel" href="index.html" aria-label="Wheel of life"><img src="img/wheel.svg" alt="Wheel of life"></a>
+  <div class="head-text">
+      <h1>Bring balance to every area of your life</h1>
+      <p>Printable planners for money, career and relationships. One clear page at a time: download, print at home or fill in on your tablet.</p>
+    </div>
+  </div>
   <div class="shop" id="planners">
   <nav class="cats" aria-label="Categories">
-    <a class="head-wheel" href="index.html" aria-label="Wheel of life"><img src="img/wheel.svg" alt="Wheel of life"></a>
     <p class="cats-title">Categories</p>
     <button type="button" class="cat on" data-cat="all">All planners</button>
     <button type="button" class="cat" data-cat="finances">Finances</button>
@@ -200,10 +212,6 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
     <button type="button" class="cat" data-cat="relationships">Relationships</button>
   </nav>
   <div class="shop-main" id="about">
-  <div class="head-text">
-      <h1>Bring balance to every area of your life</h1>
-      <p>Printable planners for money, career and relationships. One clear page at a time: download, print at home or fill in on your tablet.</p>
-    </div>
   <div class="catalog">
   <p class="empty" hidden>Planners in this category are coming soon. Follow us on Pinterest to know when they are out ♥</p>
 
