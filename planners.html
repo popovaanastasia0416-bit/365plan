@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planners – 365plan</title>
+<meta name="description" content="Printable PDF planners for money, home and habits.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#000;--blue:#EAF5FD;--blue2:#E4F6FF;--line:#bfe3f7;--pink:#FCE3EE;--hl:#D6EFFC;--orange:#FF7242;--btn:#333}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-variant-numeric:lining-nums;font-family:'Cormorant',Georgia,serif;color:var(--ink);background-color:#fff;
+  font-size:18px;line-height:1.55}
+a{color:inherit}
+.container{width:min(1160px,100% - 40px);margin:0 auto}
+
+/* header */
+.header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ececec}
+.header-in{width:min(1160px,100% - 40px);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:70px}
+.header-in .logo{justify-self:start}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;font-size:25px;font-weight:500;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.logo svg{width:28px;height:28px}
+.nav{display:flex;gap:72px}
+.nav a{text-decoration:none;font-size:19px;font-weight:500}
+@media (max-width:900px){.nav a{font-size:16px}}
+.nav a:hover{opacity:.6}
+
+/* uptitle */
+.uptitle{display:flex;justify-content:center;margin-top:0}
+.uptitle div{background:var(--blue2);border:1px solid var(--line);font-size:16px;letter-spacing:2.5px;padding:15px 28px;margin-top:2px}
+.wheel-wrap{display:flex;justify-content:center;margin-top:48px}
+.wheel{width:min(540px,92vw);height:auto;animation:spin 60s linear infinite;filter:drop-shadow(0 14px 30px rgba(0,0,0,.12))}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.wheel{animation:none}}
+.hero{text-align:center;margin:44px auto 0;max-width:760px}
+.hero h1{font-size:30px;line-height:45px;font-weight:400}
+.hero h1 span{background:var(--pink);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:2px 4px}
+.mark{background:var(--hl);padding:0 2px}
+
+/* benefits */
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:62px}
+.ben{background:#EEF8FF;border-radius:16px;padding:28px 34px 34px;box-shadow:0 12px 24px -12px rgba(0,60,120,.18)}
+.ben h3{display:flex;gap:12px;align-items:center;font-size:22px;font-weight:400;line-height:29.7px}
+.ben h3 svg{width:20px;height:20px;flex:0 0 20px}
+.ben p{font-size:18px;line-height:27.9px;margin:6px 0 0 32px}
+
+.pill{display:flex;justify-content:center;margin:72px 0 46px}
+.pill a{display:inline-block;background:var(--blue2);border:1px solid var(--line);border-radius:30px;padding:18px 48px;font-size:16px;text-decoration:none;
+  box-shadow:0 10px 22px -12px rgba(0,60,120,.3)}
+
+/* catalog */
+.catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card[hidden]{display:none}
+.card{background:var(--blue);border-radius:5px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.card .img{height:372px;background:#fff;display:flex;justify-content:center;overflow:hidden;border-bottom:1px solid #e6eef4}
+.card .img img{width:100%;height:100%;object-fit:cover;object-position:top}
+.card .badge{position:absolute;right:16px;top:16px;width:50px;height:50px;border-radius:50%;background:var(--orange);color:#fff;
+  font-family:Arial,sans-serif;font-size:11px;display:flex;align-items:center;justify-content:center;letter-spacing:.04em}
+.card .body{padding:30px 30px 32px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:22px;font-weight:600;line-height:29.7px;margin-bottom:14px}
+.card .descr{font-size:18px;line-height:1.15}
+.card .descr p+p,.card .descr ol+p,.card .descr p+ol{margin-top:12px}
+.card ol{padding-left:22px}
+.card .actions{margin-top:auto;padding-top:28px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.more{background:#fff;color:#333;font-size:15px;font-weight:300;padding:5px 7px;text-decoration:none}
+.buy{background:var(--btn);color:#fff;font-family:'Courier New',Courier,monospace;font-size:18px;font-weight:300;padding:5px 14px;text-decoration:none;border:0;cursor:pointer}
+.buy:hover{background:#000}
+.card.soon .img{background:linear-gradient(135deg,#f6f9fb,#eef3f6);align-items:center;font-size:26px;font-style:italic;color:#777}
+
+.legal{text-align:center;font-size:14px;font-style:italic;margin:38px 0 0}
+
+/* Q&A */
+.qa{max-width:760px;margin:42px auto 80px}
+.qa h2{text-align:center;font-size:18px;font-weight:600;margin-bottom:34px}
+.qa h4{font-size:18px;font-weight:600;margin-top:30px}
+.qa p{font-size:18px;line-height:27.9px}
+
+footer{background:var(--blue);text-align:center;padding:24px 20px 26px;font-size:16px}
+footer .links{display:flex;gap:46px;justify-content:center;margin-bottom:30px}
+footer a{text-decoration:none}
+
+dialog#look{margin:auto;border:0;padding:44px 24px 24px;max-width:min(1100px,96vw);background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog#look::backdrop{background:rgba(0,0,0,.45)}
+dialog#look .pages{display:flex;gap:16px;overflow-x:auto}
+dialog#look img{width:min(330px,78vw);flex:0 0 auto;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;font-size:30px;cursor:pointer;line-height:1}
+@media (max-width:900px){
+  .header-in{height:60px;display:flex;justify-content:space-between;gap:14px}
+  .nav{gap:20px}
+  .benefits,.catalog{grid-template-columns:1fr}
+  .hero h1{font-size:24px;line-height:36px}
+  .uptitle div{font-size:14px;letter-spacing:1.5px;padding:12px 16px}
+  .card .img{height:300px}
+}
+.logo-ic{width:28px;height:28px}
+
+.colors{margin-top:18px}
+.colors-label{font-size:16px;margin-bottom:8px}
+.swatches{display:flex;gap:10px}
+.sw{width:38px;height:38px;border-radius:50%;border:1px solid #bbb;cursor:pointer;padding:0;background:linear-gradient(135deg,var(--a) 0 50%,var(--b) 50% 100%);box-shadow:0 0 0 3px #fff}
+.sw.on{box-shadow:0 0 0 3px #fff,0 0 0 5px #333}
+.sw:focus-visible{outline:2px solid #333;outline-offset:4px}
+
+.colors{margin:0 0 16px}
+.card .img{position:relative}
+.dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:6px}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.dots i.on{background:#fff}
+#cover-img{transition:opacity .25s}
+
+dialog#look{width:min(1080px,96vw);max-width:none;max-height:94vh;padding:34px 30px 28px;overflow:auto}
+.pm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:34px;align-items:start}
+.pm-main{position:relative;background:#f5f5f5;cursor:zoom-in;overflow:hidden}
+dialog#look .pm-main img{width:100%;max-width:none;display:block;box-shadow:none;flex:none}
+.lens{position:absolute;width:190px;height:190px;border-radius:50%;border:3px solid #fff;box-shadow:0 6px 24px rgba(0,0,0,.35);background-repeat:no-repeat;pointer-events:none;display:none}
+.pm-hint{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.9);font-size:13px;padding:3px 9px}
+.pm-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto}
+.pm-thumbs button{flex:0 0 64px;width:64px;height:83px;padding:0;border:2px solid transparent;background:none;cursor:pointer}
+.pm-thumbs button.on{border-color:#333}
+dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-position:top;box-shadow:none;flex:none}
+.pm-info h2{font-size:28px;font-weight:600;line-height:1.2;margin:8px 0 6px}
+.pm-price{font-size:30px;font-weight:600;margin-bottom:14px}
+.pm-info ol{padding-left:22px;margin:6px 0 12px}
+.pm-note{font-size:15px;color:#555;margin-bottom:16px}
+.badge-inline{display:inline-block;background:#FF7242;color:#fff;font-family:Arial,sans-serif;font-size:11px;padding:3px 9px;border-radius:999px}
+#cover-box{cursor:pointer}
+@media (max-width:800px){dialog#look{padding:40px 14px 18px}.pm{grid-template-columns:minmax(0,1fr);gap:18px}.lens{display:none!important}.pm-hint{display:none}}
+
+.shop{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.shop .catalog{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cats{position:sticky;top:90px;display:flex;flex-direction:column;gap:4px}
+.cats-title{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#777;margin-bottom:8px}
+.cat{display:flex;align-items:center;gap:10px;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:9px 12px;font:inherit;font-size:19px;cursor:pointer;color:#222}
+.cat i{width:10px;height:10px;border-radius:50%;flex:none}
+.cat:hover{background:#f4f7fa}
+.cat.on{border-left-color:#222;background:#EAF5FD;font-weight:600}
+.empty[hidden]{display:none}
+.empty{grid-column:1/-1;font-size:20px;font-style:italic;color:#666;padding:40px 0}
+@media (max-width:900px){.shop{grid-template-columns:minmax(0,1fr)}.cats{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}.cats-title{display:none}.cat{border:1px solid #ccc;border-radius:999px;padding:6px 14px;font-size:16px}.cat.on{border-color:#222}.shop .catalog{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="header"><div class="header-in">
+  <a class="logo" href="index.html" aria-label="365plan home">
+    <svg class="logo-ic" viewBox="0 0 32 32" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17l7 7L27 8"/></svg>
+    365plan
+  </a>
+  <nav class="nav"><a href="planners.html#planners">Planners</a><a href="planners.html#qa">Q&amp;A</a><a href="planners.html#about">About</a></nav>
+</div></header>
+
+<div class="container">
+  <div class="uptitle"><div>Order for your money. Order for your [home].</div></div>
+  <div class="hero">
+    <h1><span>Printable planners for money, home and habits.</span><br><span>So everything important is on paper, not in your head.</span></h1>
+  </div>
+
+  <div class="benefits" id="about">
+    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><path d="M4 3h9l3 3v11H4z"/><path d="M7 9h6M7 12h4"/></svg>Easy to start</h3>
+      <p>A ready <span class="mark">[structure]</span>: just add your own numbers and plans.</p></div>
+    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><circle cx="10" cy="10" r="7.5"/><path d="M7 12c1.5 1.6 4.5 1.6 6 0"/><circle cx="7.5" cy="8" r=".6" fill="#000"/><circle cx="12.5" cy="8" r=".6" fill="#000"/></svg>Pleasant to use</h3>
+      <p>Calm colors, clear sections and <span class="mark">[attention to detail]</span>.</p></div>
+    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><rect x="5" y="2.5" width="10" height="15" rx="2"/><path d="M9 15h2"/></svg>Print it <em>or use a tablet</em></h3>
+      <p>Print at home, or fill it in <span class="mark">[on a tablet]</span> in GoodNotes or Notability.</p></div>
+  </div>
+
+  <div class="pill"><a href="#" id="pin">➳ find us on Pinterest ➳</a></div>
+
+  <div class="shop" id="planners">
+  <nav class="cats" aria-label="Categories">
+    <p class="cats-title">Categories</p>
+    <button type="button" class="cat on" data-cat="all">All planners</button>
+    <button type="button" class="cat" data-cat="finances"><i style="background:#F2BE1A"></i>Finances</button>
+    <button type="button" class="cat" data-cat="career"><i style="background:#FF9418"></i>Career</button>
+    <button type="button" class="cat" data-cat="relationships"><i style="background:#2B7FF2"></i>Relationships</button>
+  </nav>
+  <div class="catalog">
+  <p class="empty" hidden>Planners in this category are coming soon. Follow us on Pinterest to know when they are out ♥</p>
+
+    <article class="card" data-cat="finances">
+      <span class="badge">HIT</span>
+      <div class="img" id="cover-box"><img id="cover-img" src="img/cover-lime.jpg" alt="The Debt Payoff Planner cover, Cherry & Lime"><div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div></div>
+      <div class="body">
+        <div class="colors" role="radiogroup" aria-label="Color">
+            <p class="colors-label">Color: <b id="color-name">Cherry &amp; Lime</b></p>
+            <div class="swatches">
+              <button type="button" class="sw" role="radio" aria-checked="false" data-theme="bw" data-name="Black &amp; White" title="Black &amp; White" style="--a:#111;--b:#fff"></button>
+              <button type="button" class="sw on" role="radio" aria-checked="true" data-theme="lime" data-name="Cherry &amp; Lime" title="Cherry &amp; Lime" style="--a:#690627;--b:#BDD999"></button>
+              <button type="button" class="sw" role="radio" aria-checked="false" data-theme="cherry" data-name="Cherry &amp; Alabaster" title="Cherry &amp; Alabaster" style="--a:#890149;--b:#F3F3E7"></button>
+            </div>
+          </div>
+        <h3>"The Debt Payoff Planner" for 12 months</h3>
+        <div class="descr">
+          <p>What's inside:</p>
+          <ol>
+            <li>a debt list with monthly interest and a filled-in example;</li>
+            <li>a monthly budget with ready categories, planned vs actual;</li>
+            <li>snowball or avalanche, plus a payoff ladder;</li>
+            <li>a $1,000 starter fund: 112 small boxes to cross off;</li>
+            <li>12 monthly pages, each with a quote.</li>
+          </ol>
+          <p>Spend a few minutes a week and watch your debt go down ♥</p>
+          <p>Right after payment you get a link to download the PDF. 23 pages, US Letter and A4.</p>
+        </div>
+          <div class="actions"><a class="more" href="#" id="closer">Take a closer look</a><a class="buy" href="#" data-buy>Buy for $5</a></div>
+      </div>
+    </article>
+
+    <article class="card soon" data-cat="finances">
+      <span class="badge" style="background:#9aa3a8">SOON</span>
+      <div class="img">Coming soon</div>
+      <div class="body">
+        <h3>"Monthly Budget Planner"</h3>
+        <div class="descr">
+          <p>A budget planner for the whole year, in the same calm style.</p>
+          <p>Follow us on Pinterest to know when it is out ♥</p>
+        </div>
+      </div>
+    </article>
+  </div>
+  
+  </div>
+
+  <p class="legal">Payments are processed by our payment partner. Digital product, nothing is shipped.</p>
+
+  <section class="qa" id="qa">
+    <h2>Q&amp;A</h2>
+    <h4>Where is my product after I pay?</h4>
+    <p>Already with you.<br>Right after payment you get a link to download the PDF files.<br>Download → print or open on a tablet → that's it, you are set.</p>
+    <h4>Do I need to install anything?</h4>
+    <p>Nope. No apps, no installs.<br>A PDF opens on any phone or computer. To write on it, use any PDF app, for example GoodNotes or Notability.</p>
+    <h4>Does it work on a phone?</h4>
+    <p>Yes 📱<br>You can open the PDF on your phone to check your plan on the go.<br>For writing, a printed copy or a tablet is more comfortable.</p>
+    <h4>What if I lost the link?</h4>
+    <p>Check the email receipt from the payment service: the link is there.<br>If you still can't find it, write to us at <a href="mailto:YOUR-EMAIL@example.com">YOUR-EMAIL@example.com</a> from the email you paid with.</p>
+  </section>
+</div>
+
+<dialog id="look" aria-label="The Debt Payoff Planner">
+  <button class="x" aria-label="Close">×</button>
+  <div class="pm">
+    <div class="pm-gal">
+      <div class="pm-main" id="pm-main">
+        <img id="pm-img" src="img/cover-lime.jpg" alt="">
+        <div class="lens" id="pm-lens" aria-hidden="true"></div>
+        <span class="pm-hint">Preview · 4 of 23 pages</span>
+      </div>
+      <div class="pm-thumbs" id="pm-thumbs"></div>
+    </div>
+    <div class="pm-info">
+      <span class="badge-inline">HIT</span>
+      <h2>"The Debt Payoff Planner" for 12 months</h2>
+      <p class="pm-price">$5</p>
+      <div class="colors" role="radiogroup" aria-label="Color">
+        <p class="colors-label">Color: <b class="pm-color-name">Cherry &amp; Lime</b></p>
+        <div class="swatches">
+          <button type="button" class="sw" role="radio" data-theme="bw" data-name="Black &amp; White" title="Black &amp; White" style="--a:#111;--b:#fff"></button>
+          <button type="button" class="sw" role="radio" data-theme="lime" data-name="Cherry &amp; Lime" title="Cherry &amp; Lime" style="--a:#690627;--b:#BDD999"></button>
+          <button type="button" class="sw" role="radio" data-theme="cherry" data-name="Cherry &amp; Alabaster" title="Cherry &amp; Alabaster" style="--a:#890149;--b:#F3F3E7"></button>
+        </div>
+      </div>
+      <p><b>What's inside:</b></p>
+      <ol>
+        <li>a debt list with monthly interest and a filled-in example;</li>
+        <li>a monthly budget with ready categories, planned vs actual;</li>
+        <li>snowball or avalanche, plus a payoff ladder;</li>
+        <li>a $1,000 starter fund: 112 small boxes to cross off;</li>
+        <li>12 monthly pages, each with a quote.</li>
+      </ol>
+      <p class="pm-note">Instant PDF download right after payment. 23 pages, US Letter and A4.</p>
+      <a class="buy" href="#" data-buy>Buy for $5</a>
+    </div>
+  </div>
+</dialog>
+<footer>
+  <div class="links"><a href="planners.html#planners">Planners</a><a href="planners.html#qa">Q&amp;A</a></div>
+  <p>Support: <a href="mailto:YOUR-EMAIL@example.com">YOUR-EMAIL@example.com</a></p>
+  <p>© <span id="y">2026</span> 365plan — printable planners for a calmer life.</p>
+</footer>
+
+<script>
+/* Put your payment link in BUY_URL and your Pinterest profile in PINTEREST_URL. */
+const BUY_URL = "";
+const PINTEREST_URL = "";
+document.querySelectorAll("[data-buy]").forEach(function (a) {
+  if (BUY_URL) { a.href = BUY_URL; } else { a.addEventListener("click", function (e) { e.preventDefault(); alert("Payment link is not set yet."); }); }
+});
+if (PINTEREST_URL) { document.getElementById("pin").href = PINTEREST_URL; }
+var dlg = document.getElementById("look");
+var PM_PAGES = ["cover", "debt", "fund", "month"], pmIdx = 0;
+function pmRender() {
+  var t = currentTheme;
+  document.getElementById("pm-img").src = "img/" + PM_PAGES[pmIdx] + "-" + t + ".jpg";
+  var th = document.getElementById("pm-thumbs"); th.innerHTML = "";
+  PM_PAGES.forEach(function (p, k) {
+    var b = document.createElement("button"); b.type = "button"; b.className = k === pmIdx ? "on" : "";
+    b.setAttribute("aria-label", "Page " + (k + 1));
+    b.innerHTML = '<img src="img/' + p + '-' + t + '.jpg" alt="">';
+    b.addEventListener("click", function () { pmIdx = k; pmRender(); });
+    th.appendChild(b);
+  });
+  dlg.querySelectorAll(".sw").forEach(function (x) { var on = x.dataset.theme === t; x.classList.toggle("on", on); x.setAttribute("aria-checked", on ? "true" : "false"); });
+  var nm = document.querySelector('.sw[data-theme="' + t + '"]'); dlg.querySelector(".pm-color-name").textContent = nm ? nm.dataset.name : "";
+}
+function pmOpen(e) { if (e) e.preventDefault(); clearInterval(flip); pmIdx = typeof pageIdx !== "undefined" ? [0, 1, 3][pageIdx] : 0; pmRender(); dlg.showModal(); }
+document.getElementById("closer").addEventListener("click", pmOpen);
+document.getElementById("cover-box").addEventListener("click", pmOpen);
+dlg.querySelector(".x").addEventListener("click", function () { dlg.close(); });
+dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+dlg.querySelectorAll(".sw").forEach(function (b) { b.addEventListener("click", function () {
+  var outer = document.querySelector('.card .sw[data-theme="' + b.dataset.theme + '"]'); if (outer) outer.click(); pmRender(); }); });
+/* magnifier */
+(function () {
+  var main = document.getElementById("pm-main"), lens = document.getElementById("pm-lens"), img = document.getElementById("pm-img"), Z = 2.6;
+  main.addEventListener("mousemove", function (e) {
+    var r = img.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (x < 0 || y < 0 || x > r.width || y > r.height) { lens.style.display = "none"; return; }
+    lens.style.display = "block";
+    lens.style.left = (x - 95) + "px"; lens.style.top = (y - 95) + "px";
+    lens.style.backgroundImage = "url('" + img.src + "')";
+    lens.style.backgroundSize = (r.width * Z) + "px " + (r.height * Z) + "px";
+    lens.style.backgroundPosition = (-(x * Z - 95)) + "px " + (-(y * Z - 95)) + "px";
+  });
+  main.addEventListener("mouseleave", function () { lens.style.display = "none"; });
+})();
+
+/* Color variants: set a separate checkout link per color if you have them (Gumroad variants or separate products). */
+const BUY_URLS = { bw: "", lime: "", cherry: "" };
+let currentTheme = "lime";
+document.querySelectorAll(".sw").forEach(function (b) {
+  b.addEventListener("click", function () {
+    document.querySelectorAll(".sw").forEach(function (x) { x.classList.remove("on"); x.setAttribute("aria-checked", "false"); });
+    b.classList.add("on"); b.setAttribute("aria-checked", "true");
+    currentTheme = b.dataset.theme;
+    var img = document.getElementById("cover-img");
+    img.src = "img/" + (typeof PAGES !== "undefined" ? PAGES[pageIdx] : "cover") + "-" + currentTheme + ".jpg";
+    img.alt = "The Debt Payoff Planner cover, " + b.dataset.name;
+    document.getElementById("color-name").textContent = b.dataset.name;
+    var buy = document.querySelector("[data-buy]");
+    var u = BUY_URLS[currentTheme] || BUY_URL;
+    if (u) buy.href = u;
+  });
+});
+
+/* hover preview: cover -> debt list -> month page */
+var PAGES = ["cover", "debt", "month"], pageIdx = 0, flip = null;
+function showPage(i) {
+  pageIdx = i;
+  document.getElementById("cover-img").src = "img/" + PAGES[i] + "-" + currentTheme + ".jpg";
+  document.querySelectorAll(".dots i").forEach(function (d, k) { d.classList.toggle("on", k === i); });
+}
+var box = document.getElementById("cover-box");
+box.addEventListener("mouseenter", function () { showPage(1); flip = setInterval(function () { showPage((pageIdx + 1) % 3); }, 1100); });
+box.addEventListener("mouseleave", function () { clearInterval(flip); showPage(0); });
+["cover", "debt", "month"].forEach(function (p) { ["bw", "lime", "cherry"].forEach(function (t) { var im = new Image(); im.src = "img/" + p + "-" + t + ".jpg"; }); });
+
+document.querySelectorAll(".cat").forEach(function (b) {
+  b.addEventListener("click", function () {
+    document.querySelectorAll(".cat").forEach(function (x) { x.classList.toggle("on", x === b); });
+    var c = b.dataset.cat, n = 0;
+    document.querySelectorAll(".catalog .card").forEach(function (card) { var show = c === "all" || card.dataset.cat === c; card.hidden = !show; if (show) n++; });
+    document.querySelector(".empty").hidden = n > 0;
+  });
+});
+document.getElementById("y").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
