@@ -187,15 +187,16 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 .top-row{position:relative;isolation:isolate;border-bottom:0 !important;margin-top:0 !important;padding:34px 0 34px !important}
 .top-row::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:-1;background:linear-gradient(120deg,#FDE7F0 0%,#F4ECFF 45%,#E6F4FF 100%)}
 .top-row .head-wheel img{filter:drop-shadow(0 10px 24px rgba(60,30,60,.18))}
+.logo{gap:10px}
+.logo-icon{height:34px;width:auto}
+.logo-word{height:26px;width:auto}
+@media (max-width:900px){.logo-icon{height:28px}.logo-word{height:20px}}
 </style>
 </head>
 <body>
 
 <header class="header"><div class="header-in">
-  <a class="logo" href="index.html" aria-label="365plan home">
-    <svg class="logo-ic" viewBox="0 0 32 32" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17l7 7L27 8"/></svg>
-    365plan
-  </a>
+  <a class="logo" href="index.html" aria-label="365plan home"><img class="logo-icon" src="img/logo-icon.png" alt=""><img class="logo-word" src="img/logo-word.png" alt="365plan"></a>
   <nav class="nav"><a href="planners.html#planners">Planners</a><a href="planners.html#qa">Q&amp;A</a><a href="planners.html#about">About</a></nav>
 </div></header>
 
