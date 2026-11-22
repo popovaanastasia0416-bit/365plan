@@ -151,6 +151,11 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 .feat h3{font-family:'Lexend',Arial,sans-serif;font-weight:700;font-size:21px;margin:14px 0 6px;color:#1d1d1d}
 .feat p{font-size:18px;line-height:1.45;color:#444}
 @media (max-width:900px){.feats{grid-template-columns:minmax(0,1fr)}.feat+.feat{border-left:0;border-top:1px solid #d6d6d6}.intro{margin:34px auto 44px}}
+
+.page-head{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap;margin:34px 0 26px;padding-bottom:18px;border-bottom:1px solid #e5e5e5}
+.page-head h1{font-size:40px;font-weight:500;line-height:1}
+.page-head p{font-size:18px;color:#555;max-width:620px}
+@media (max-width:900px){.page-head{margin:22px 0 18px;gap:8px}.page-head h1{font-size:32px}}
 </style>
 </head>
 <body>
@@ -164,16 +169,10 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 </div></header>
 
 <div class="container">
-  <section class="intro" id="about">
-    <p class="intro-kick">Printable planners</p>
-    <h1 class="intro-h">Everything important on paper,<br><em>not in your head.</em></h1>
-    <p class="intro-sub">Planners for money, home and habits. Print them at home or fill them in on a tablet.</p>
-    <div class="feats">
-      <div class="feat"><span class="feat-n">01</span><h3>Easy to start</h3><p>A ready structure: just add your own numbers and plans.</p></div>
-      <div class="feat"><span class="feat-n">02</span><h3>Pleasant to use</h3><p>Calm colors, clear sections and attention to detail.</p></div>
-      <div class="feat"><span class="feat-n">03</span><h3>Print or tablet</h3><p>Print at home or write on it in GoodNotes or Notability.</p></div>
-    </div>
-  </section>
+  <div class="page-head" id="about">
+    <h1>Planners</h1>
+    <p>Printable PDF planners for money, home and habits. Instant download, print at home or use on a tablet.</p>
+  </div>
 
   <div class="shop" id="planners">
   <nav class="cats" aria-label="Categories">
