@@ -6,7 +6,7 @@
 <title>Planners – 365plan</title>
 <meta name="description" content="Printable PDF planners for money, home and habits.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#000;--blue:#EAF5FD;--blue2:#E4F6FF;--line:#bfe3f7;--pink:#FCE3EE;--hl:#D6EFFC;--orange:#FF7242;--btn:#333}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -138,6 +138,19 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 .empty[hidden]{display:none}
 .empty{grid-column:1/-1;font-size:20px;font-style:italic;color:#666;padding:40px 0}
 @media (max-width:900px){.shop{grid-template-columns:minmax(0,1fr)}.cats{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}.cats-title{display:none}.cat{border:1px solid #ccc;border-radius:999px;padding:6px 14px;font-size:16px}.cat.on{border-color:#222}.shop .catalog{grid-template-columns:minmax(0,1fr)}}
+
+.intro{text-align:center;margin:56px auto 64px}
+.intro-kick{font-family:'Lexend',Arial,sans-serif;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#690627;font-weight:600}
+.intro-h{font-family:'Lexend',Arial,sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,54px);line-height:1.08;letter-spacing:-.01em;margin:14px auto 16px;max-width:900px;color:#1d1d1d}
+.intro-h em{font-style:normal;color:#690627;background:linear-gradient(transparent 62%,#BDD999 62% 92%,transparent 92%)}
+.intro-sub{font-size:20px;color:#555;max-width:560px;margin:0 auto}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:46px;border-top:2px solid #1d1d1d;border-bottom:2px solid #1d1d1d;text-align:left}
+.feat{padding:26px 28px 28px}
+.feat+.feat{border-left:1px solid #d6d6d6}
+.feat-n{font-family:'Lexend',Arial,sans-serif;font-weight:800;font-size:14px;color:#690627;background:#BDD999;padding:3px 8px}
+.feat h3{font-family:'Lexend',Arial,sans-serif;font-weight:700;font-size:21px;margin:14px 0 6px;color:#1d1d1d}
+.feat p{font-size:18px;line-height:1.45;color:#444}
+@media (max-width:900px){.feats{grid-template-columns:minmax(0,1fr)}.feat+.feat{border-left:0;border-top:1px solid #d6d6d6}.intro{margin:34px auto 44px}}
 </style>
 </head>
 <body>
@@ -151,18 +164,16 @@ dialog#look .pm-thumbs img{width:100%;height:100%;object-fit:cover;object-positi
 </div></header>
 
 <div class="container">
-  <div class="hero">
-    <h1><span>Printable planners for money, home and habits.</span><br><span>So everything important is on paper, not in your head.</span></h1>
-  </div>
-
-  <div class="benefits" id="about">
-    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><path d="M4 3h9l3 3v11H4z"/><path d="M7 9h6M7 12h4"/></svg>Easy to start</h3>
-      <p>A ready <span class="mark">[structure]</span>: just add your own numbers and plans.</p></div>
-    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><circle cx="10" cy="10" r="7.5"/><path d="M7 12c1.5 1.6 4.5 1.6 6 0"/><circle cx="7.5" cy="8" r=".6" fill="#000"/><circle cx="12.5" cy="8" r=".6" fill="#000"/></svg>Pleasant to use</h3>
-      <p>Calm colors, clear sections and <span class="mark">[attention to detail]</span>.</p></div>
-    <div class="ben"><h3><svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.3"><rect x="5" y="2.5" width="10" height="15" rx="2"/><path d="M9 15h2"/></svg>Print it <em>or use a tablet</em></h3>
-      <p>Print at home, or fill it in <span class="mark">[on a tablet]</span> in GoodNotes or Notability.</p></div>
-  </div>
+  <section class="intro" id="about">
+    <p class="intro-kick">Printable planners</p>
+    <h1 class="intro-h">Everything important on paper,<br><em>not in your head.</em></h1>
+    <p class="intro-sub">Planners for money, home and habits. Print them at home or fill them in on a tablet.</p>
+    <div class="feats">
+      <div class="feat"><span class="feat-n">01</span><h3>Easy to start</h3><p>A ready structure: just add your own numbers and plans.</p></div>
+      <div class="feat"><span class="feat-n">02</span><h3>Pleasant to use</h3><p>Calm colors, clear sections and attention to detail.</p></div>
+      <div class="feat"><span class="feat-n">03</span><h3>Print or tablet</h3><p>Print at home or write on it in GoodNotes or Notability.</p></div>
+    </div>
+  </section>
 
   <div class="shop" id="planners">
   <nav class="cats" aria-label="Categories">
