@@ -196,15 +196,17 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 
   var fills = [], hits = [], bands = [];
   el("circle", {cx: C, cy: C, r: R_OUT, fill: "#fff"});
+  var outerRing = function () { el("circle", {cx: C, cy: C, r: R_OUT, fill: "none", stroke: "#222", "stroke-width": 1.6, "pointer-events": "none"}); };
   AREAS.forEach(function (a, i) {
     var a0 = i * STEP, a1 = (i + 1) * STEP;
     bands.push(el("path", {d: sector(R_RING, R_OUT, a0, a1), fill: a.color, "class": "wq-band"}));
     fills.push(el("path", {d: "", fill: a.color, "fill-opacity": ".55", "class": "wq-fill"}));
   });
-  for (var k = 1; k <= 10; k++) el("circle", {cx: C, cy: C, r: ringR(k), fill: "none", stroke: "#bdbdbd", "stroke-width": k === 10 ? 1.6 : 1, "pointer-events": "none"});
+  for (var k = 1; k <= 10; k++) el("circle", {cx: C, cy: C, r: ringR(k), fill: "none", stroke: "#222", "stroke-width": k === 10 ? 1.6 : 1, "pointer-events": "none"});
   AREAS.forEach(function (a, i) {
-    var p = pt(R_OUT, i * STEP); el("line", {x1: C, y1: C, x2: p[0], y2: p[1], stroke: "#fff", "stroke-width": 3, "pointer-events": "none"});
+    var p = pt(R_OUT, i * STEP); el("line", {x1: C, y1: C, x2: p[0], y2: p[1], stroke: "#222", "stroke-width": 1.6, "pointer-events": "none"});
   });
+  outerRing();
   // clickable cells
   AREAS.forEach(function (a, i) {
     var a0 = i * STEP, a1 = (i + 1) * STEP, g = el("g", {"class": "wq-slice", "data-i": i});
