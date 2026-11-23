@@ -112,7 +112,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-intro h1{white-space:nowrap;font-size:clamp(26px,2.6vw,36px);font-weight:500;line-height:1.1}
 .wq-intro p{font-size:18px;color:#555;margin-top:8px}
 .wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,400px);gap:44px;justify-content:center;align-items:start}
-.wq-wheel svg{width:100%;max-height:calc(100vh - 110px);height:auto;margin:0 auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
+.wq-wheel svg{width:100%;max-height:calc(100vh - 130px);height:auto;margin:0 auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
 .wq-cell{cursor:pointer;outline:none}
 .wq-wheel svg.spin{animation:spin 60s linear infinite}
 .wq-wheel svg.spin.paused{animation-play-state:paused}
@@ -132,6 +132,10 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-btn:hover{background:#000}
 .wq-reset{display:block;margin-top:12px;background:none;border:0;font:inherit;font-size:15px;color:#666;text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:900px){.wq-body{grid-template-columns:minmax(0,1fr);gap:22px}.wq-side{display:contents}.wq-intro{order:-1;text-align:center}.wq-intro h1{white-space:normal}.wq{margin-top:24px}}
+
+.wq{position:relative;isolation:isolate;margin:0 0 20px !important;padding:22px 0 26px}
+.wq::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:-1;background:linear-gradient(120deg,#FDE7F0 0%,#F4ECFF 45%,#E6F4FF 100%)}
+.wq-list li.hl{background:rgba(255,255,255,.75)}
 </style>
 </head>
 <body>
