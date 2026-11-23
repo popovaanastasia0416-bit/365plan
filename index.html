@@ -130,6 +130,9 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-list span{flex:1}
 .wq-btn{display:inline-block;margin-top:14px;background:#222;color:#fff;text-decoration:none;padding:12px 22px;font-size:17px}
 .wq-btn:hover{background:#000}
+.wq-btn{border:0;font:inherit;cursor:pointer}
+.wq-btn-ghost{background:#fff;color:#222;box-shadow:inset 0 0 0 1.5px #222;margin-left:8px}
+.wq-btn-ghost:hover{background:#f2f2f2}
 .wq-reset{display:block;margin-top:12px;background:none;border:0;font:inherit;font-size:15px;color:#666;text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:900px){.wq-body{grid-template-columns:minmax(0,1fr);gap:22px}.wq-side{display:contents}.wq-intro{order:-1;text-align:center}.wq-intro h1{white-space:normal}.wq{margin-top:24px}}
 
@@ -189,6 +192,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
           <p class="wq-muted" id="wq-tip"></p>
           <a class="wq-btn" id="wq-cta" href="planners.html">See planners</a>
           <a class="wq-more" href="#wq-report">Read your full results ↓</a>
+          <button type="button" class="wq-btn wq-pdf" style="display:block;margin-top:10px">Download my wheel (PDF)</button>
           <button type="button" class="wq-reset" id="wq-reset">Start over</button>
         </div>
       </aside>
@@ -262,35 +266,56 @@ window.buildWheelReport = (function () {
   return function (areas, scores) {
     var box = document.getElementById("wq-report"); if (!box) return;
     var idx = areas.map(function (a, i) { return i; });
-    var byLow = idx.slice().sort(function (x, y) { return scores[x] - scores[y]; });
-    var byHigh = idx.slice().sort(function (x, y) { return scores[y] - scores[x]; });
+    /* keystone order: on equal scores, the area that tends to lift the others comes first */
+    var KEY = ["finances", "health", "relationships", "career", "family", "growth", "recreation", "spirituality", "hobbies"];
+    function rank(i) { return KEY.indexOf(areas[i].key); }
+    var byLow = idx.slice().sort(function (x, y) { return scores[x] - scores[y] || rank(x) - rank(y); });
+    var byHigh = idx.slice().sort(function (x, y) { return scores[y] - scores[x] || rank(x) - rank(y); });
     var avg = scores.reduce(function (s, v) { return s + v; }, 0) / scores.length;
     var spread = scores[byHigh[0]] - scores[byLow[0]];
     var shape = spread <= 3 ? "Your wheel is fairly round: no area is far behind the others. Now you can raise the whole wheel, one area at a time."
       : spread <= 5 ? "Your wheel is a little uneven: one or two areas are pulling the ride off balance. Fixing the lowest one usually lifts the others too."
       : "Your wheel is uneven: there is a big gap between your strongest and weakest areas. A bumpy wheel makes the whole ride harder, so start with the lowest area.";
-    var focus = areas[byLow[0]], fs = scores[byLow[0]], fd = D[focus.key];
+    var fi = byLow[0], focus = areas[fi], fs = scores[fi], fd = D[focus.key];
+    var tie = byLow.filter(function (i) { return scores[i] === fs; }).length > 1;
+    /* other weak areas: everything at 4 or below, else the next lowest one; max 2 */
+    var others = byLow.slice(1).filter(function (i) { return scores[i] <= 4; }).slice(0, 2);
+    if (!others.length && byLow.length > 1 && scores[byLow[1]] < scores[byHigh[0]]) others = [byLow[1]];
     var s1 = areas[byHigh[0]], s2 = areas[byHigh[1]];
+    var next = Math.min(10, fs + 1);
+    var questions = [
+      ["Goal", "What would a 10 in " + focus.name + " look like for you in one sentence?"],
+      ["Reality", "Why is it a " + fs + " and not lower? What is already working?"],
+      ["Options", "What would move it from " + fs + " to " + next + "? List three ideas, even small ones."],
+      ["Will", "Which one will you do this week, and when exactly?"]
+    ];
+    var plan = [
+      ["Week 1", "Answer the four questions above and do the first small step."],
+      ["Week 2", "Turn the step into a habit: same day, same time."],
+      ["Week 3", "Add the second step and keep the first one going."],
+      ["Week 4", "Retake this wheel and compare. Even +1 is real progress."]
+    ];
+    window.__wheelData = {areas: areas, scores: scores.slice(), avg: avg, shape: shape, focus: fi, others: others,
+      strengths: [byHigh[0], byHigh[1]], tie: tie, D: D, lvl: lvl, questions: questions, plan: plan};
     var html = '';
     html += '<p class="rp-k">Your full results</p>';
     html += '<h2>Your balance score: ' + avg.toFixed(1) + ' / 10</h2>';
     html += '<p class="rp-lead">' + esc(shape) + '</p>';
     html += '<div class="rp-grid">';
     html += '<div class="rp-card"><h3>Your strengths</h3><p><b>' + esc(s1.name) + '</b> (' + scores[byHigh[0]] + ') and <b>' + esc(s2.name) + '</b> (' + scores[byHigh[1]] + ').</p><p class="rp-muted">Use them as leverage. For example, if Relationships is strong, ask a friend to be your accountability partner for your focus area.</p></div>';
-    html += '<div class="rp-card rp-focus" style="--c:' + focus.color + '"><h3>Your focus area: ' + esc(focus.name) + ' (' + fs + ')</h3><p>' + esc(fd.means) + '</p></div>';
+    html += '<div class="rp-card rp-focus" style="--c:' + focus.color + '"><h3>Start with: ' + esc(focus.name) + ' (' + fs + ')</h3><p>' + esc(fd.means) + '</p>' + (tie ? '<p class="rp-muted">Several areas share this score. We put ' + esc(focus.name) + ' first because progress here tends to lift the others.</p>' : '') + '</div>';
     html += '</div>';
     html += '<h3 class="rp-h">3 small steps for this week</h3><ol class="rp-ol">' + fd.actions.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
-    var next = Math.min(10, fs + 1);
-    html += '<h3 class="rp-h">Questions coaches ask (the GROW model)</h3><ul class="rp-q">';
-    html += '<li><b>Goal.</b> What would a 10 in ' + esc(focus.name) + ' look like for you in one sentence?</li>';
-    html += '<li><b>Reality.</b> Why is it a ' + fs + ' and not lower? What is already working?</li>';
-    html += '<li><b>Options.</b> What would move it from ' + fs + ' to ' + next + '? List three ideas, even small ones.</li>';
-    html += '<li><b>Will.</b> Which one will you do this week, and when exactly?</li></ul>';
-    html += '<h3 class="rp-h">Your 30-day plan</h3><ol class="rp-ol">';
-    html += '<li><b>Week 1.</b> Answer the four questions above and do the first small step.</li>';
-    html += '<li><b>Week 2.</b> Turn the step into a habit: same day, same time.</li>';
-    html += '<li><b>Week 3.</b> Add the second step and keep the first one going.</li>';
-    html += '<li><b>Week 4.</b> Retake this wheel and compare. Even +1 is real progress.</li></ol>';
+    if (others.length) {
+      html += '<h3 class="rp-h">Also worth attention</h3><div class="rp-grid">';
+      others.forEach(function (i) {
+        var a = areas[i], d = D[a.key];
+        html += '<div class="rp-card rp-focus" style="--c:' + a.color + '"><h3>' + esc(a.name) + ' (' + scores[i] + ')</h3><p>' + esc(d[lvl(scores[i])]) + '</p><p class="rp-muted">One step: ' + esc(d.actions[0]) + '</p></div>';
+      });
+      html += '</div><p class="rp-muted">Coaches suggest working on one area at a time. Come back to these once your first step is a habit.</p>';
+    }
+    html += '<h3 class="rp-h">Questions coaches ask (the GROW model)</h3><ul class="rp-q">' + questions.map(function (q) { return '<li><b>' + q[0] + '.</b> ' + esc(q[1]) + '</li>'; }).join('') + '</ul>';
+    html += '<h3 class="rp-h">Your 30-day plan</h3><ol class="rp-ol">' + plan.map(function (p) { return '<li><b>' + p[0] + '.</b> ' + esc(p[1]) + '</li>'; }).join('') + '</ol>';
     html += '<h3 class="rp-h">All your areas</h3><div class="rp-table">';
     idx.forEach(function (i) {
       var a = areas[i], s = scores[i];
@@ -298,8 +323,9 @@ window.buildWheelReport = (function () {
     });
     html += '</div>';
     html += '<div class="rp-cta">';
-    if (focus.key === "finances") html += '<a class="wq-btn" href="planners.html#planners">Get the Debt Payoff Planner</a>';
-    else html += '<a class="wq-btn" href="planners.html">Browse planners</a>';
+    html += '<button type="button" class="wq-btn wq-pdf">Download my wheel (PDF)</button> ';
+    if (focus.key === "finances") html += '<a class="wq-btn wq-btn-ghost" href="planners.html#planners">Get the Debt Payoff Planner</a>';
+    else html += '<a class="wq-btn wq-btn-ghost" href="planners.html">Browse planners</a>';
     html += '<p class="rp-muted">Retake the wheel in 30 days to see what changed. Your answers are saved in this browser.</p></div>';
     html += '<p class="rp-note">Based on the classic Wheel of Life coaching exercise and the GROW coaching model. General guidance, not professional advice.</p>';
     box.innerHTML = html; box.hidden = false;
@@ -418,6 +444,113 @@ window.buildWheelReport = (function () {
   wrap.addEventListener("touchstart", function () { svg.classList.add("paused"); }, {passive: true});
   wrap.addEventListener("focusin", function () { svg.classList.add("paused"); });
   svg.addEventListener("click", function () { svg.classList.add("paused"); });
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* Builds "My Wheel of Life" PDF: page 1 wheel + scores + summary, page 2 plan and advice. */
+(function () {
+  function wheelImage(cb) {
+    var src = document.getElementById("wq-svg");
+    var clone = src.cloneNode(true);
+    clone.removeAttribute("class");
+    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    clone.setAttribute("width", "620"); clone.setAttribute("height", "620");
+    clone.querySelectorAll(".wq-band").forEach(function (b) { b.style.opacity = 1; });
+    var xml = new XMLSerializer().serializeToString(clone);
+    var img = new Image();
+    img.onload = function () {
+      var c = document.createElement("canvas"); c.width = 1240; c.height = 1240;
+      var ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, 1240, 1240);
+      ctx.drawImage(img, 0, 0, 1240, 1240); cb(c.toDataURL("image/jpeg", 0.88));
+    };
+    img.onerror = function () { cb(null); };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+  }
+  var FONTS = null;
+  function loadFonts(cb) {
+    if (FONTS !== null) return cb(FONTS);
+    var files = {corm: "fonts/corm-600.ttf", cormi: "fonts/corm-500i.ttf", lato: "fonts/lato-400.ttf", latob: "fonts/lato-700.ttf"};
+    var keys = Object.keys(files), out = {};
+    Promise.all(keys.map(function (k) {
+      return fetch(files[k]).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(function (b) {
+        var u = new Uint8Array(b), s = ""; for (var i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
+        out[k] = btoa(s);
+      });
+    })).then(function () { FONTS = out; cb(out); }, function () { FONTS = false; cb(false); });
+  }
+  function hex(h) { h = h.replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+  function make() {
+    var W = window.__wheelData; if (!W || !window.jspdf) { alert("Please rate all 9 areas first."); return; }
+    loadFonts(function (F) { wheelImage(function (png) {
+      var doc = new window.jspdf.jsPDF({unit: "pt", format: "letter"});
+      if (F) {
+        doc.addFileToVFS("corm.ttf", F.corm); doc.addFont("corm.ttf", "Corm", "normal");
+        doc.addFileToVFS("cormi.ttf", F.cormi); doc.addFont("cormi.ttf", "CormI", "normal");
+        doc.addFileToVFS("lato.ttf", F.lato); doc.addFont("lato.ttf", "Lato", "normal");
+        doc.addFileToVFS("latob.ttf", F.latob); doc.addFont("latob.ttf", "Lato", "bold");
+      }
+      var PW = 612, M = 48, y = 0;
+      function text(t, x, yy, size, style, color, maxW) {
+        var head = style === "bold" && size >= 13;
+        if (F && head) { doc.setFont("Corm", "normal"); size = size * 1.3; }
+        else if (F && style === "italic") { doc.setFont("CormI", "normal"); size = size * 1.3; }
+        else if (F) { doc.setFont("Lato", style === "bold" ? "bold" : "normal"); }
+        else doc.setFont("helvetica", style === "italic" ? "normal" : (style || "normal"));
+        doc.setFontSize(size); doc.setTextColor.apply(doc, color || [34, 34, 34]);
+        var lines = doc.splitTextToSize(t, maxW || PW - 2 * M); doc.text(lines, x, yy); return yy + lines.length * size * 1.3;
+      }
+      function need(h) { if (y + h > 750) { doc.addPage(); y = 56; } }
+      /* page 1 */
+      var g0 = [253, 231, 240], g1 = [244, 236, 255], g2 = [230, 244, 255];
+      for (var gx = 0; gx < PW; gx += 4) { var t = gx / PW, a = t < .5 ? g0 : g1, b = t < .5 ? g1 : g2, u = t < .5 ? t * 2 : (t - .5) * 2;
+        doc.setFillColor(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u); doc.rect(gx, 0, 4.5, 124, "F"); }
+      y = text("My Wheel of Life", M, 62, 26, "bold");
+      text("my365plan  ·  " + new Date().toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"}), M, 82, 11, "normal", [90, 90, 90]);
+      text("Balance score: " + W.avg.toFixed(1) + " / 10", M, 108, 12, "italic", [137, 1, 73]);
+      if (png) doc.addImage(png, "JPEG", M, 140, 300, 300);
+      var lx = M + 320, ly = 160;
+      W.areas.forEach(function (a, i) {
+        doc.setFillColor.apply(doc, hex(a.color)); doc.circle(lx + 5, ly - 4, 4, "F");
+        text(a.name, lx + 16, ly, 11); text(String(W.scores[i]), PW - M - 14, ly, 11, "bold");
+        doc.setFillColor(235, 235, 235); doc.rect(lx + 16, ly + 5, 160, 4, "F");
+        doc.setFillColor.apply(doc, hex(a.color)); doc.rect(lx + 16, ly + 5, 16 * W.scores[i], 4, "F");
+        ly += 30;
+      });
+      y = 470;
+      y = text(W.shape, M, y, 11.5, "italic", [70, 70, 70]) + 8;
+      var f = W.areas[W.focus], d = W.D[f.key];
+      var s1 = W.areas[W.strengths[0]], s2 = W.areas[W.strengths[1]];
+      y = text("Your strengths", M, y, 14, "bold") + 2;
+      y = text(s1.name + " (" + W.scores[W.strengths[0]] + ") and " + s2.name + " (" + W.scores[W.strengths[1]] + "). Use them as leverage for your focus area.", M, y, 11) + 10;
+      doc.setFillColor.apply(doc, hex(f.color)); doc.rect(M, y - 12, 4, 60, "F");
+      y = text("Start with: " + f.name + " (" + W.scores[W.focus] + ")", M + 12, y, 14, "bold") + 2;
+      y = text(d.means, M + 12, y, 11, "normal", [51, 51, 51], PW - 2 * M - 12) + 16;
+      y = text("All your areas", M, y, 14, "bold") + 2;
+      W.areas.forEach(function (a, i) { y = text(a.name + " · " + W.scores[i] + "/10 — " + W.D[a.key][W.lvl(W.scores[i])], M, y, 9.5, "normal", [51, 51, 51]) + 1; });
+      /* page 2 */
+      doc.addPage(); y = 60;
+      y = text("Your plan for " + f.name, M, y, 20, "bold") + 8;
+      y = text("3 small steps for this week", M, y, 14, "bold") + 2;
+      d.actions.forEach(function (a, i) { y = text((i + 1) + ".  " + a, M, y, 11) + 2; });
+      y += 10;
+      if (W.others.length) {
+        y = text("Also worth attention", M, y, 14, "bold") + 2;
+        W.others.forEach(function (i) { var a = W.areas[i]; y = text(a.name + " (" + W.scores[i] + "): " + W.D[a.key][W.lvl(W.scores[i])] + " One step: " + W.D[a.key].actions[0], M, y, 11) + 4; });
+        y += 8;
+      }
+      y = text("Questions coaches ask (GROW model)", M, y, 14, "bold") + 2;
+      W.questions.forEach(function (q) { y = text(q[0] + ". " + q[1], M, y, 11) + 2; doc.setDrawColor(190, 190, 190); doc.line(M, y + 8, PW - M, y + 8); doc.line(M, y + 26, PW - M, y + 26); y += 36; });
+      y += 14; need(120);
+      y = text("Your 30-day plan", M, y, 14, "bold") + 2;
+      W.plan.forEach(function (p) { doc.setDrawColor(60, 60, 60); doc.rect(M, y - 9, 9, 9); y = text(p[0] + ". " + p[1], M + 16, y, 11) + 4; });
+      y += 10;
+      need(50); y += 14;
+      text("Based on the Wheel of Life coaching exercise and the GROW model. General guidance, not professional advice. my365plan", M, y, 9, "normal", [130, 130, 130]);
+      doc.save("my-wheel-of-life.pdf");
+    }); });
+  }
+  document.addEventListener("click", function (e) { if (e.target.closest(".wq-pdf")) { e.preventDefault(); make(); } });
 })();
 </script>
 </body>
