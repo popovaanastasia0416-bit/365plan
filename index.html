@@ -140,6 +140,8 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:-1;background:linear-gradient(120deg,#FDE7F0 0%,#F4ECFF 45%,#E6F4FF 100%)}
 .wq-list li.hl{background:rgba(255,255,255,.75)}
 
+.wq-below{margin-top:6px}
+.wq-below[hidden]{display:none}
 .wq-more{display:block;margin-top:12px;font-size:16px;color:#222}
 .wq-report{max-width:860px;margin:40px auto 10px;scroll-margin-top:90px}
 .wq-report[hidden]{display:none}
@@ -187,6 +189,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
     </div>
         <div id="wq-progress"><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted" id="wq-muted-hint">Click a ring: 1 in the centre, 10 at the edge.</p></div>
         <ol class="wq-list" id="wq-list"></ol>
+        <a class="wq-btn wq-below" id="wq-below" href="#wq-report" hidden>See your results ↓</a>
         <div id="wq-result" hidden>
           <p class="wq-k">Your result</p>
           <p class="wq-big">Your lowest area is <b id="wq-low">Finances</b>. Start here.</p>
@@ -427,8 +430,8 @@ window.buildWheelReport = (function () {
       var cta = document.getElementById("wq-cta");
       if (a.planner) { cta.textContent = "See the Debt Payoff Planner"; cta.href = "planners.html#planners"; }
       else { cta.textContent = "Planners for " + a.name + " are coming soon"; cta.href = "planners.html"; }
-      res.hidden = true; document.getElementById("wq-progress").hidden = false; var mm = document.getElementById("wq-muted-hint"); if (mm) mm.innerHTML = '<a class="wq-more" href="#wq-report">Your results are below ↓</a>'; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
-    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var mh = document.getElementById("wq-muted-hint"); if (mh) mh.textContent = "Click a ring: 1 in the centre, 10 at the edge."; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
+      res.hidden = true; document.getElementById("wq-progress").hidden = false; var mm = document.getElementById("wq-muted-hint"); if (mm) mm.hidden = true; document.getElementById("wq-below").hidden = false; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
+    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var mh = document.getElementById("wq-muted-hint"); if (mh) mh.hidden = false; document.getElementById("wq-below").hidden = true; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
   }
   document.addEventListener("click", function (e) { if (!e.target.closest(".wq-reset")) return;
     scores = AREAS.map(function () { return 0; });
