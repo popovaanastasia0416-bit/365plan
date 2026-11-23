@@ -107,12 +107,12 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .logo-word{height:24px;width:auto}
 @media (max-width:900px){.logo-icon{height:28px}.logo-word{height:17px}}
 
-.wq{margin:28px 0 20px}
+.wq{margin:22px 0 20px}
 .wq-intro{margin-bottom:14px}
 .wq-intro h1{white-space:nowrap;font-size:clamp(26px,2.6vw,36px);font-weight:500;line-height:1.1}
 .wq-intro p{font-size:18px;color:#555;margin-top:8px}
 .wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,400px);gap:44px;justify-content:center;align-items:start}
-.wq-wheel svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
+.wq-wheel svg{width:100%;max-height:calc(100vh - 110px);height:auto;margin:0 auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
 .wq-cell{cursor:pointer;outline:none}
 .wq-wheel svg.spin{animation:spin 60s linear infinite}
 .wq-wheel svg.spin.paused{animation-play-state:paused}
