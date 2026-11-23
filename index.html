@@ -107,11 +107,11 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .logo-word{height:24px;width:auto}
 @media (max-width:900px){.logo-icon{height:28px}.logo-word{height:17px}}
 
-.wq{margin:40px 0 20px}
-.wq-intro{text-align:center;margin-bottom:22px}
-.wq-intro h1{font-size:clamp(30px,4vw,44px);font-weight:500;line-height:1.1}
+.wq{margin:28px 0 20px}
+.wq-intro{margin-bottom:22px}
+.wq-intro h1{font-size:clamp(30px,3.4vw,40px);font-weight:500;line-height:1.1}
 .wq-intro p{font-size:18px;color:#555;margin-top:8px}
-.wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,340px);gap:40px;justify-content:center;align-items:center}
+.wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,340px);gap:44px;justify-content:center;align-items:start}
 .wq-wheel svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
 .wq-cell{cursor:pointer;outline:none}
 .wq-wheel svg.spin{animation:spin 60s linear infinite}
@@ -131,7 +131,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-btn{display:inline-block;margin-top:14px;background:#222;color:#fff;text-decoration:none;padding:12px 22px;font-size:17px}
 .wq-btn:hover{background:#000}
 .wq-reset{display:block;margin-top:12px;background:none;border:0;font:inherit;font-size:15px;color:#666;text-decoration:underline;cursor:pointer;padding:0}
-@media (max-width:900px){.wq-body{grid-template-columns:minmax(0,1fr);gap:22px}.wq{margin-top:24px}}
+@media (max-width:900px){.wq-body{grid-template-columns:minmax(0,1fr);gap:22px}.wq-side{display:contents}.wq-intro{order:-1;text-align:center}.wq{margin-top:24px}}
 </style>
 </head>
 <body>
@@ -143,13 +143,13 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 
 <div class="container">
   <section class="wq" id="wheel">
-    <div class="wq-intro">
-      <h1>How balanced is your life?</h1>
-      <p>Rate each area from 1 to 10: click a ring inside its slice. 1 is the centre, 10 is the edge.</p>
-    </div>
     <div class="wq-body">
       <div class="wq-wheel"><svg id="wq-svg" viewBox="0 0 620 620" role="img" aria-label="Wheel of life: rate each area from 1 to 10"></svg></div>
       <aside class="wq-side" aria-live="polite">
+        <div class="wq-intro">
+      <h1>How balanced is your life?</h1>
+      <p>Rate each area from 1 to 10: click a ring inside its slice. 1 is the centre, 10 is the edge.</p>
+    </div>
         <div id="wq-progress"><p class="wq-k">Your wheel</p><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted">Hover a slice to see its name, click a ring to rate it. You can change any score.</p></div>
         <ol class="wq-list" id="wq-list"></ol>
         <div id="wq-result" hidden>
