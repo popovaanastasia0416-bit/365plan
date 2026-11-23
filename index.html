@@ -106,6 +106,27 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .logo-icon{height:34px;width:auto}
 .logo-word{height:24px;width:auto}
 @media (max-width:900px){.logo-icon{height:28px}.logo-word{height:17px}}
+
+.wq{margin:40px 0 20px}
+.wq-intro{text-align:center;margin-bottom:22px}
+.wq-intro h1{font-size:clamp(30px,4vw,44px);font-weight:500;line-height:1.1}
+.wq-intro p{font-size:18px;color:#555;margin-top:8px}
+.wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,340px);gap:40px;justify-content:center;align-items:center}
+.wq-wheel svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
+.wq-cell{cursor:pointer;outline:none}
+.wq-cell:focus-visible{stroke:#222;stroke-width:2}
+.wq-fill,.wq-band{transition:opacity .15s}
+.wq-k{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#777}
+.wq-big{font-size:24px;line-height:1.25;margin:6px 0 8px}
+.wq-muted{font-size:16px;color:#555;line-height:1.45}
+.wq-list{list-style:none;margin:16px 0;display:grid;gap:6px}
+.wq-list li{display:flex;align-items:center;gap:10px;font-size:17px}
+.wq-list i{width:10px;height:10px;border-radius:50%;flex:none}
+.wq-list span{flex:1}
+.wq-btn{display:inline-block;margin-top:14px;background:#222;color:#fff;text-decoration:none;padding:12px 22px;font-size:17px}
+.wq-btn:hover{background:#000}
+.wq-reset{display:block;margin-top:12px;background:none;border:0;font:inherit;font-size:15px;color:#666;text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:900px){.wq-body{grid-template-columns:minmax(0,1fr);gap:22px}.wq{margin-top:24px}}
 </style>
 </head>
 <body>
@@ -116,7 +137,26 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 </div></header>
 
 <div class="container">
-  <div class="wheel-wrap"><img class="wheel" src="img/wheel.svg" alt="Wheel of life: health, career, finances, hobbies, personal growth, relationships, recreation, spirituality, family"></div>
+  <section class="wq" id="wheel">
+    <div class="wq-intro">
+      <h1>How balanced is your life?</h1>
+      <p>Rate each area from 1 to 10: click a ring inside its slice. 1 is the centre, 10 is the edge.</p>
+    </div>
+    <div class="wq-body">
+      <div class="wq-wheel"><svg id="wq-svg" viewBox="0 0 620 620" role="img" aria-label="Wheel of life: rate each area from 1 to 10"></svg></div>
+      <aside class="wq-side" aria-live="polite">
+        <div id="wq-progress"><p class="wq-k">Your wheel</p><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted">Hover a slice to see its name, click a ring to rate it. You can change any score.</p></div>
+        <ol class="wq-list" id="wq-list"></ol>
+        <div id="wq-result" hidden>
+          <p class="wq-k">Your result</p>
+          <p class="wq-big">Your lowest area is <b id="wq-low">Finances</b>. Start here.</p>
+          <p class="wq-muted" id="wq-tip"></p>
+          <a class="wq-btn" id="wq-cta" href="planners.html">See planners</a>
+          <button type="button" class="wq-reset" id="wq-reset">Start over</button>
+        </div>
+      </aside>
+    </div>
+  </section>
   <section class="articles" id="articles">
     <h2>Articles</h2>
     <div class="art-grid"><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article></div>
@@ -129,5 +169,106 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 </footer>
 
 <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+<script>
+(function () {
+  var AREAS = [
+    {key: "health", name: "Health", color: "#FF5A4E", tip: "Small daily routines (sleep, water, a walk) move this score fastest."},
+    {key: "career", name: "Career", color: "#FF9418", tip: "Write down one skill to grow this quarter and one step for this week."},
+    {key: "finances", name: "Finances", color: "#F2BE1A", tip: "A clear list of debts and a monthly budget are the first two steps.", planner: true},
+    {key: "hobbies", name: "Hobbies", color: "#7DCB34", tip: "Block one hour a week for something you do just for fun."},
+    {key: "growth", name: "Personal growth", color: "#1FC9BC", tip: "Pick one book or course and a simple habit tracker to stay on it."},
+    {key: "relationships", name: "Relationships", color: "#2B7FF2", tip: "Plan one quality evening a week with the people who matter."},
+    {key: "recreation", name: "Recreation", color: "#7A47CF", tip: "Rest goes in the calendar first, not whatever time is left."},
+    {key: "spirituality", name: "Spirituality", color: "#A65CEB", tip: "Five quiet minutes a day: journaling, prayer or meditation."},
+    {key: "family", name: "Family", color: "#FF4F9E", tip: "A shared family calendar takes the stress out of busy weeks."}
+  ];
+  var C = 310, R_IN = 22, R_RING = 236, R_OUT = 300, N = AREAS.length, STEP = 360 / N, NS = "http://www.w3.org/2000/svg";
+  var scores = AREAS.map(function () { return 0; });
+  try { var saved = JSON.parse(localStorage.getItem("my365-wheel") || "null"); if (saved && saved.length === N) scores = saved; } catch (e) {}
+  var svg = document.getElementById("wq-svg");
+  function pt(r, a) { var t = (a - 90) * Math.PI / 180; return [C + r * Math.cos(t), C + r * Math.sin(t)]; }
+  function sector(r0, r1, a0, a1) {
+    var p0 = pt(r1, a0), p1 = pt(r1, a1), p2 = pt(r0, a1), p3 = pt(r0, a0);
+    return "M" + p0 + " A" + r1 + "," + r1 + " 0 0 1 " + p1 + " L" + p2 + " A" + r0 + "," + r0 + " 0 0 0 " + p3 + "Z";
+  }
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; }
+  function ringR(k) { return R_IN + (R_RING - R_IN) * k / 10; }
+
+  var fills = [], hits = [], bands = [];
+  el("circle", {cx: C, cy: C, r: R_OUT, fill: "#fff"});
+  AREAS.forEach(function (a, i) {
+    var a0 = i * STEP, a1 = (i + 1) * STEP;
+    bands.push(el("path", {d: sector(R_RING, R_OUT, a0, a1), fill: a.color, "class": "wq-band"}));
+    fills.push(el("path", {d: "", fill: a.color, "fill-opacity": ".55", "class": "wq-fill"}));
+  });
+  for (var k = 1; k <= 10; k++) el("circle", {cx: C, cy: C, r: ringR(k), fill: "none", stroke: "#bdbdbd", "stroke-width": k === 10 ? 1.6 : 1, "pointer-events": "none"});
+  AREAS.forEach(function (a, i) {
+    var p = pt(R_OUT, i * STEP); el("line", {x1: C, y1: C, x2: p[0], y2: p[1], stroke: "#fff", "stroke-width": 3, "pointer-events": "none"});
+  });
+  // clickable cells
+  AREAS.forEach(function (a, i) {
+    var a0 = i * STEP, a1 = (i + 1) * STEP, g = el("g", {"class": "wq-slice", "data-i": i});
+    for (var k = 1; k <= 10; k++) {
+      var cell = el("path", {d: sector(ringR(k - 1), ringR(k), a0, a1), fill: "transparent", "class": "wq-cell", tabindex: k === 1 ? "0" : "-1", role: "button", "aria-label": a.name + ": " + k + " of 10"}, g);
+      (function (i, k) {
+        cell.addEventListener("click", function () { setScore(i, k); });
+        cell.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setScore(i, k); } });
+        cell.addEventListener("mouseenter", function () { preview(i, k); });
+      })(i, k);
+    }
+    g.addEventListener("mouseleave", function () { preview(-1); });
+    hits.push(g);
+  });
+  // labels
+  var defs = el("defs", {});
+  AREAS.forEach(function (a, i) {
+    var a0 = i * STEP + 1, a1 = (i + 1) * STEP - 1, p0 = pt(268, a0), p1 = pt(268, a1);
+    el("path", {id: "wq-lb" + i, d: "M" + p0 + " A268,268 0 0 1 " + p1}, defs);
+    var t = el("text", {"font-family": "Arial, Helvetica, sans-serif", "font-weight": "700", "font-size": a.name.length > 12 ? 15 : 21, fill: "#fff", "letter-spacing": "1", "pointer-events": "none"});
+    var tp = el("textPath", {href: "#wq-lb" + i, startOffset: "50%", "text-anchor": "middle"}, t); tp.textContent = a.name.toUpperCase();
+  });
+  var hover = el("text", {x: C, y: C + 6, "text-anchor": "middle", "font-family": "Arial, sans-serif", "font-weight": "700", "font-size": "18", fill: "#222", "pointer-events": "none", "class": "wq-hover"});
+
+  function draw(i, k) { fills[i].setAttribute("d", k > 0 ? sector(R_IN * 0, ringR(k), i * STEP, (i + 1) * STEP) : ""); }
+  function preview(i, k) {
+    AREAS.forEach(function (a, j) { draw(j, scores[j]); bands[j].style.opacity = i < 0 || i === j ? 1 : .45; });
+    if (i >= 0) { draw(i, k); fills[i].setAttribute("fill-opacity", ".35"); hover.textContent = AREAS[i].name + " · " + k; }
+    else { AREAS.forEach(function (a, j) { fills[j].setAttribute("fill-opacity", ".55"); }); hover.textContent = ""; }
+  }
+  function setScore(i, k) {
+    scores[i] = k; fills[i].setAttribute("fill-opacity", ".55");
+    try { localStorage.setItem("my365-wheel", JSON.stringify(scores)); } catch (e) {}
+    render();
+  }
+  function render() {
+    AREAS.forEach(function (a, j) { draw(j, scores[j]); });
+    var done = scores.filter(function (s) { return s > 0; }).length;
+    document.getElementById("wq-count").textContent = done;
+    var list = document.getElementById("wq-list"); list.innerHTML = "";
+    AREAS.forEach(function (a, j) {
+      var li = document.createElement("li");
+      li.innerHTML = '<i style="background:' + a.color + '"></i><span>' + a.name + '</span><b>' + (scores[j] || "–") + '</b>';
+      list.appendChild(li);
+    });
+    var res = document.getElementById("wq-result");
+    if (done === N) {
+      var low = 0; scores.forEach(function (s, j) { if (s < scores[low]) low = j; });
+      var a = AREAS[low];
+      document.getElementById("wq-low").textContent = a.name;
+      document.getElementById("wq-tip").textContent = a.tip;
+      var cta = document.getElementById("wq-cta");
+      if (a.planner) { cta.textContent = "See the Debt Payoff Planner"; cta.href = "planners.html#planners"; }
+      else { cta.textContent = "Planners for " + a.name + " are coming soon"; cta.href = "planners.html"; }
+      res.hidden = false; document.getElementById("wq-progress").hidden = true;
+    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; }
+  }
+  document.getElementById("wq-reset").addEventListener("click", function () {
+    scores = AREAS.map(function () { return 0; });
+    try { localStorage.removeItem("my365-wheel"); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
 </body>
 </html>
