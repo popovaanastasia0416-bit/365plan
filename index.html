@@ -114,6 +114,10 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-body{display:grid;grid-template-columns:minmax(0,560px) minmax(0,340px);gap:40px;justify-content:center;align-items:center}
 .wq-wheel svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.10))}
 .wq-cell{cursor:pointer;outline:none}
+.wq-wheel svg.spin{animation:spin 60s linear infinite}
+.wq-wheel svg.spin.paused{animation-play-state:paused}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.wq-wheel svg.spin{animation:none}}
 .wq-cell:focus-visible{stroke:#222;stroke-width:2}
 .wq-fill,.wq-band{transition:opacity .15s}
 .wq-k{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#777}
@@ -270,6 +274,15 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
     render();
   });
   render();
+  /* spin until the visitor starts rating */
+  var anyScore = scores.some(function (v) { return v > 0; });
+  if (!anyScore) svg.classList.add("spin");
+  var wrap = svg.parentNode;
+  wrap.addEventListener("mouseenter", function () { svg.classList.add("paused"); });
+  wrap.addEventListener("mouseleave", function () { if (!scores.some(function (v) { return v > 0; })) svg.classList.remove("paused"); });
+  wrap.addEventListener("touchstart", function () { svg.classList.add("paused"); }, {passive: true});
+  wrap.addEventListener("focusin", function () { svg.classList.add("paused"); });
+  svg.addEventListener("click", function () { svg.classList.add("paused"); });
 })();
 </script>
 </body>
