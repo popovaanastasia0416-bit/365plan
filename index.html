@@ -124,7 +124,8 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-big{font-size:24px;line-height:1.25;margin:6px 0 8px}
 .wq-muted{font-size:16px;color:#555;line-height:1.45}
 .wq-list{list-style:none;margin:16px 0;display:grid;gap:6px}
-.wq-list li{display:flex;align-items:center;gap:10px;font-size:17px}
+.wq-list li{display:flex;align-items:center;gap:10px;font-size:17px;padding:4px 10px;margin:0 -10px;transition:background .12s}
+.wq-list li.hl{background:#f2f2f2;font-weight:600}
 .wq-list i{width:10px;height:10px;border-radius:50%;flex:none}
 .wq-list span{flex:1}
 .wq-btn{display:inline-block;margin-top:14px;background:#222;color:#fff;text-decoration:none;padding:12px 22px;font-size:17px}
@@ -238,8 +239,10 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
   function draw(i, k) { fills[i].setAttribute("d", k > 0 ? sector(R_IN * 0, ringR(k), i * STEP, (i + 1) * STEP) : ""); }
   function preview(i, k) {
     AREAS.forEach(function (a, j) { draw(j, scores[j]); bands[j].style.opacity = i < 0 || i === j ? 1 : .45; });
-    if (i >= 0) { draw(i, k); fills[i].setAttribute("fill-opacity", ".35"); hover.textContent = AREAS[i].name + " · " + k; }
-    else { AREAS.forEach(function (a, j) { fills[j].setAttribute("fill-opacity", ".55"); }); hover.textContent = ""; }
+    var rows = document.querySelectorAll("#wq-list li");
+    rows.forEach(function (li, j) { li.classList.toggle("hl", j === i); li.querySelector("b").textContent = j === i ? k : (scores[j] || "–"); });
+    if (i >= 0) { draw(i, k); fills[i].setAttribute("fill-opacity", ".35"); }
+    else { AREAS.forEach(function (a, j) { fills[j].setAttribute("fill-opacity", ".55"); }); }
   }
   function setScore(i, k) {
     scores[i] = k; fills[i].setAttribute("fill-opacity", ".55");
