@@ -143,33 +143,106 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq-below{margin-top:6px}
 .wq-below[hidden]{display:none}
 .wq-more{display:block;margin-top:12px;font-size:16px;color:#222}
-.wq-report{max-width:860px;margin:40px auto 10px;scroll-margin-top:90px}
+.wq-report{max-width:960px;margin:48px auto 10px;scroll-margin-top:90px;font-size:18px}
 .wq-report[hidden]{display:none}
-.rp-k{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#777}
-.wq-report h2{font-size:clamp(28px,3.4vw,38px);font-weight:500;margin:6px 0 8px}
-.rp-lead{font-size:19px;color:#333;line-height:1.5}
-.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 8px}
-.rp-card{border:1px solid #e3e3e3;padding:18px 20px}
-.rp-card h3{font-size:21px;font-weight:600;margin-bottom:6px}
-.rp-card p{font-size:17px;line-height:1.5}
-.rp-focus{border-left:5px solid var(--c)}
-.rp-muted{color:#666;font-size:16px;margin-top:6px;line-height:1.5}
-.rp-h{font-size:24px;font-weight:600;margin:28px 0 10px}
-.rp-ol{padding-left:22px;font-size:18px;line-height:1.55}
-.rp-ol li{margin-bottom:6px}
-.rp-q{list-style:none;font-size:18px;line-height:1.55}
-.rp-q li{padding:10px 14px;background:#f7f7f9;margin-bottom:8px}
-.rp-table{display:grid;gap:10px}
-.rp-row{display:grid;grid-template-columns:12px 150px 1fr 28px;gap:4px 12px;align-items:center;font-size:17px}
-.rp-dot{width:10px;height:10px;border-radius:50%}
-.rp-bar{height:8px;background:#eee;position:relative}
-.rp-bar i{position:absolute;left:0;top:0;bottom:0}
-.rp-row b{text-align:right}
-.rp-tip{grid-column:2/-1;font-size:15px;color:#666;margin-bottom:6px}
-.rp-cta{margin:28px 0 10px}
-.rp-reset{display:inline-block;margin:0 0 0 14px;vertical-align:middle}
-.rp-note{font-size:14px;color:#888;margin-top:16px}
-@media (max-width:700px){.rp-grid{grid-template-columns:1fr}.rp-row{grid-template-columns:12px 110px 1fr 24px}}
+.wq-report h2,.wq-report h3{font-weight:600;line-height:1.15}
+.rp-k{font-family:Arial,Helvetica,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9a2d6a;margin-bottom:6px}
+.rp-small{font-size:15.5px;color:#6b6575;margin-top:10px;line-height:1.45}
+.rp-sub{font-size:17px;color:#6b6575;margin:-4px 0 16px;font-style:italic}
+.rp-h{font-size:30px;margin:0 0 10px}
+.rp-sec{margin-top:56px}
+.rp-two+.rp-sub{margin:14px 0 0}
+/* hero */
+.rp-hero{position:relative;display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center;padding:38px 42px;border-radius:28px;
+  background:radial-gradient(120% 140% at 0% 0%,#FFE1EE 0%,rgba(255,225,238,0) 55%),radial-gradient(120% 140% at 100% 100%,#DCEEFF 0%,rgba(220,238,255,0) 55%),#F6EEFF;
+  box-shadow:0 24px 60px -30px rgba(120,60,150,.45);overflow:hidden}
+.rp-hero::after{content:"✦";position:absolute;right:34px;top:18px;font-size:30px;color:#fff;opacity:.9}
+.rp-gauge{position:relative;width:200px;height:200px}
+.rp-gauge svg{width:100%;height:100%;animation:rpgrow 1.2s cubic-bezier(.2,.8,.2,1)}
+@keyframes rpgrow{from{transform:rotate(-40deg) scale(.85);opacity:0}}
+.rp-gauge-n{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rp-gauge-n b{font-size:64px;font-weight:600;line-height:1}
+.rp-gauge-n span{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#6b6575;margin-top:4px}
+.rp-hero h2{font-size:clamp(34px,4vw,50px);margin:2px 0 10px}
+.rp-lead{font-size:20px;line-height:1.5;color:#2c2632}
+.rp-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.rp-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:999px;padding:7px 14px;font-family:Arial,sans-serif;font-size:13.5px;color:#2c2632}
+.rp-chip i{width:10px;height:10px;border-radius:50%}
+/* cards */
+.rp-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.rp-card{border-radius:22px;padding:26px 28px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.rp-card h3{font-size:26px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.rp-card h3 i{width:12px;height:12px;border-radius:50%;flex:none}
+.rp-card p{line-height:1.5;color:#2c2632}
+.rp-green{background:#EEF8E4}
+.rp-green .rp-k{color:#4c8a1c}
+/* steps */
+.rp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rp-step{position:relative;border-radius:22px;padding:24px 22px 22px;background:#fff;border:1.5px solid color-mix(in srgb,var(--c) 35%,#fff)}
+.rp-step span{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:var(--c);color:#fff;font-size:22px;font-weight:600;margin-bottom:14px}
+.rp-step p{line-height:1.45}
+/* offer */
+.rp-offer{margin-top:64px;display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center;padding:40px;border-radius:30px;background:linear-gradient(135deg,#3B0420 0%,#7A0A43 60%,#A3195E 100%);color:#fff;box-shadow:0 30px 70px -30px rgba(122,10,67,.7)}
+.rp-offer-img{position:relative}
+.rp-offer-img img{display:block;width:100%;border-radius:6px;transform:rotate(-4deg);box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .4s}
+.rp-offer:hover .rp-offer-img img{transform:rotate(0) scale(1.03)}
+.rp-offer .rp-k{color:#FFC6E0}
+.rp-offer h3{font-size:clamp(28px,3vw,38px);margin:4px 0 12px}
+.rp-offer-p{color:#F6D9E7;margin-bottom:6px}
+.rp-offer ul{list-style:none;margin:14px 0 22px;display:grid;gap:8px}
+.rp-offer li{position:relative;padding-left:30px;font-size:18px;color:#fff}
+.rp-offer li::before{content:"✓";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:#FFC6E0;color:#7A0A43;font:700 12px/20px Arial,sans-serif;text-align:center}
+.rp-buy{display:inline-block;background:#fff;color:#7A0A43;text-decoration:none;font-family:Arial,sans-serif;font-weight:700;font-size:16px;padding:16px 28px;border-radius:999px;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:transform .2s}
+.rp-buy:hover{transform:translateY(-2px)}
+.rp-offer .rp-small{color:#F2C3DA}
+/* grow */
+.rp-grow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rp-q{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #ece6f2;border-radius:20px;padding:20px 22px}
+.rp-q>span{flex:none;width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#FDE7F0,#E6F4FF);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#6a3a9a}
+.rp-q b{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#6a3a9a}
+.rp-q p{margin-top:2px;line-height:1.45}
+/* weeks */
+.rp-weeks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rp-week{border-radius:20px;padding:20px}
+.rp-week b{display:block;font-size:22px;margin-bottom:6px}
+.rp-week p{font-size:16.5px;line-height:1.45}
+.rp-w0{background:#FDE2EE}.rp-w1{background:#F1E7FF}.rp-w2{background:#E1F0FF}.rp-w3{background:#E6F6DC}
+/* all areas */
+.rp-all{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rp-area{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px 18px}
+.rp-area-top{display:flex;align-items:center;gap:8px;font-weight:600;font-size:19px}
+.rp-area-top i{width:10px;height:10px;border-radius:50%}
+.rp-area-top span{flex:1}
+.rp-area-top b{font-size:24px}
+.rp-bar{height:6px;border-radius:3px;background:#f0edf3;margin:8px 0 10px;overflow:hidden}
+.rp-bar i{display:block;height:100%;border-radius:3px}
+.rp-area p{font-size:15.5px;line-height:1.45;color:#555}
+/* gift */
+.rp-gift{margin-top:56px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:32px 36px;border-radius:26px;background:linear-gradient(120deg,#FDE7F0 0%,#F4ECFF 45%,#E6F4FF 100%)}
+.rp-gift h3{font-size:30px;margin-bottom:6px}
+.rp-gift p{max-width:470px}
+.rp-gift-b{display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+.rp-dl{background:#222;color:#fff;border:0;border-radius:999px;font-family:Arial,sans-serif;font-weight:700;font-size:15.5px;padding:16px 26px;cursor:pointer}
+.rp-dl:hover{background:#000}
+.rp-reset{margin:0 !important}
+.rp-note{font-size:14px;color:#8a8494;margin-top:18px;text-align:center}
+@media (max-width:860px){
+  .rp-hero{grid-template-columns:1fr;justify-items:center;text-align:center;padding:30px 22px;gap:18px}
+  .rp-gauge{width:160px;height:160px}.rp-gauge-n b{font-size:50px}
+  .rp-chips{justify-content:center}
+  .rp-two,.rp-grow,.rp-steps{grid-template-columns:1fr}
+  .rp-weeks{grid-template-columns:1fr 1fr}
+  .rp-all{grid-template-columns:1fr}
+  .rp-offer{grid-template-columns:1fr;padding:28px 22px;gap:26px}
+  .rp-offer-img{max-width:230px;margin:0 auto}
+  .rp-gift{flex-direction:column;align-items:flex-start;padding:26px 22px}
+  .rp-gift-b{align-items:flex-start}
+  .rp-h{font-size:26px}
+}
+@media (max-width:480px){.rp-weeks{grid-template-columns:1fr}}
+.lang{justify-self:end;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-decoration:none;color:#222;border:1.5px solid #222;border-radius:999px;padding:5px 11px;line-height:1}
+.lang:hover{background:#222;color:#fff}
+@media (max-width:520px){.header-in{gap:10px}.nav{gap:14px}.nav a{font-size:15px;white-space:nowrap}.logo-word{display:none}.lang{padding:4px 8px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -177,6 +250,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 <header class="header"><div class="header-in">
   <a class="logo" href="index.html" aria-label="my365plan home"><img class="logo-icon" src="img/logo-icon.png" alt=""><img class="logo-word" src="img/logo-word.png" alt="my365plan"></a>
   <nav class="nav"><a href="planners.html#planners">Planners</a><a href="planners.html#qa">Q&amp;A</a><a href="planners.html#about">About</a></nav>
+  <a class="lang" href="https://popovaanastasia0416-bit.github.io/365plan-ru/" hreflang="ru" lang="ru" title="Русская версия">RU</a>
 </div></header>
 
 <div class="container">
@@ -190,15 +264,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
         <div id="wq-progress"><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted" id="wq-muted-hint">Click a ring: 1 in the centre, 10 at the edge.</p></div>
         <ol class="wq-list" id="wq-list"></ol>
         <a class="wq-btn wq-below" id="wq-below" href="#wq-report" hidden>See your results ↓</a>
-        <div id="wq-result" hidden>
-          <p class="wq-k">Your result</p>
-          <p class="wq-big">Your lowest area is <b id="wq-low">Finances</b>. Start here.</p>
-          <p class="wq-muted" id="wq-tip"></p>
-          <a class="wq-btn" id="wq-cta" href="planners.html">See planners</a>
-          <a class="wq-more" href="#wq-report">Read your full results ↓</a>
-          <button type="button" class="wq-btn wq-pdf" style="display:block;margin-top:10px">Download my wheel (PDF)</button>
-          <button type="button" class="wq-reset" id="wq-reset">Start over</button>
-        </div>
+        
       </aside>
     </div>
   </section>
@@ -215,127 +281,8 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 </footer>
 
 <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
-<script>
-/* Full Wheel of Life report: built when all 9 areas are rated. */
-window.buildWheelReport = (function () {
-  var D = {
-    health: {
-      means: "Energy, sleep, movement and how you eat. When this area is low, every other area gets harder.",
-      actions: ["Go to bed at the same time for 7 nights in a row.", "Add a 20-minute walk to three days this week.", "Plan tomorrow's meals tonight, even roughly."],
-      low: "Start with sleep: it is the cheapest fix with the biggest effect.", mid: "Pick one habit (water, steps, bedtime) and track it daily.", high: "Protect your routine on busy weeks; it is your base for everything else."
-    },
-    career: {
-      means: "Your work, growth and sense of progress. A low score often comes from feeling stuck, not from the job itself.",
-      actions: ["Write down what a 10 at work would look like in one paragraph.", "Name one skill to grow this quarter and book the first hour of learning.", "Have one conversation this week about your next step (manager, mentor, friend)."],
-      low: "Separate what you can change now from what needs a bigger move.", mid: "Set one 90-day goal with a clear finish line.", high: "Share what you know: mentoring others keeps this area strong."
-    },
-    finances: {
-      means: "How in control you feel of money: debts, savings, spending. Low scores usually mean uncertainty more than a lack of income.",
-      actions: ["List every debt with its balance, rate and minimum payment.", "Write a simple monthly budget: income, must-pay bills, what is left.", "Start a small emergency fund, even $5 a week."],
-      low: "Clarity first: knowing your exact numbers lowers stress on its own.", mid: "Pick one method (snowball or avalanche) and automate one payment.", high: "Grow your cushion to 3 to 6 months of expenses and set a new goal."
-    },
-    hobbies: {
-      means: "Things you do just because you enjoy them. Hobbies refill the energy the other areas use.",
-      actions: ["Make a list of 5 things you loved doing as a kid.", "Block one hour this week for one of them.", "Try one free class, video or local group."],
-      low: "Treat fun as a real appointment, not a reward for later.", mid: "Keep one hobby going weekly so it becomes a habit.", high: "Share it: a hobby with friends counts twice."
-    },
-    growth: {
-      means: "Learning, confidence and becoming who you want to be.",
-      actions: ["Choose one book or course and set a 15-minute daily slot.", "Write down three things you did well this week.", "Pick one small fear and do it once."],
-      low: "Small daily progress beats big plans you never start.", mid: "Track one learning habit for 30 days.", high: "Set a stretch goal that scares you a little."
-    },
-    relationships: {
-      means: "Partner and friends: how connected and supported you feel.",
-      actions: ["Message two people you miss today.", "Plan one quality evening with no phones.", "Ask someone close: what is one thing I could do better for you?"],
-      low: "Reach out first; most people are waiting for someone else to.", mid: "Put regular time with your people in the calendar.", high: "Be the one who organizes: it keeps the circle strong."
-    },
-    recreation: {
-      means: "Rest and recovery: time off, trips, real breaks.",
-      actions: ["Put one fully free evening in your calendar this week.", "Plan a day trip or a small treat for this month.", "Turn off work notifications after a set hour."],
-      low: "Rest is not a reward for finishing everything; schedule it first.", mid: "Plan your next real break now, even a short one.", high: "Keep your boundaries when life gets busy."
-    },
-    spirituality: {
-      means: "Inner calm, meaning and values, whatever that means for you.",
-      actions: ["Spend 5 quiet minutes each morning: journaling, prayer or breathing.", "Write down your top 3 values and check one choice against them.", "Spend time in nature this week."],
-      low: "Start with five minutes of quiet a day; consistency matters more than length.", mid: "Link a daily practice to something you already do, like morning coffee.", high: "Use this calm as an anchor for the areas that feel shaky."
-    },
-    family: {
-      means: "Relationships with parents, siblings and children.",
-      actions: ["Plan one shared meal or call this week.", "Start a shared family calendar for the busy days.", "Ask each family member what would make home feel easier."],
-      low: "One small ritual (a weekly call, a Sunday dinner) rebuilds connection.", mid: "Plan family time ahead instead of fitting it in.", high: "Share the load so it stays good for everyone."
-    }
-  };
-  function lvl(s) { return s <= 4 ? "low" : s <= 7 ? "mid" : "high"; }
-  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); }
-  return function (areas, scores) {
-    var box = document.getElementById("wq-report"); if (!box) return;
-    var idx = areas.map(function (a, i) { return i; });
-    /* keystone order: on equal scores, the area that tends to lift the others comes first */
-    var KEY = ["finances", "health", "relationships", "career", "family", "growth", "recreation", "spirituality", "hobbies"];
-    function rank(i) { return KEY.indexOf(areas[i].key); }
-    var byLow = idx.slice().sort(function (x, y) { return scores[x] - scores[y] || rank(x) - rank(y); });
-    var byHigh = idx.slice().sort(function (x, y) { return scores[y] - scores[x] || rank(x) - rank(y); });
-    var avg = scores.reduce(function (s, v) { return s + v; }, 0) / scores.length;
-    var spread = scores[byHigh[0]] - scores[byLow[0]];
-    var shape = spread <= 3 ? "Your wheel is fairly round: no area is far behind the others. Now you can raise the whole wheel, one area at a time."
-      : spread <= 5 ? "Your wheel is a little uneven: one or two areas are pulling the ride off balance. Fixing the lowest one usually lifts the others too."
-      : "Your wheel is uneven: there is a big gap between your strongest and weakest areas. A bumpy wheel makes the whole ride harder, so start with the lowest area.";
-    var fi = byLow[0], focus = areas[fi], fs = scores[fi], fd = D[focus.key];
-    var tie = byLow.filter(function (i) { return scores[i] === fs; }).length > 1;
-    /* other weak areas: everything at 4 or below, else the next lowest one; max 2 */
-    var others = byLow.slice(1).filter(function (i) { return scores[i] <= 4; }).slice(0, 2);
-    if (!others.length && byLow.length > 1 && scores[byLow[1]] < scores[byHigh[0]]) others = [byLow[1]];
-    var s1 = areas[byHigh[0]], s2 = areas[byHigh[1]];
-    var next = Math.min(10, fs + 1);
-    var questions = [
-      ["Goal", "What would a 10 in " + focus.name + " look like for you in one sentence?"],
-      ["Reality", "Why is it a " + fs + " and not lower? What is already working?"],
-      ["Options", "What would move it from " + fs + " to " + next + "? List three ideas, even small ones."],
-      ["Will", "Which one will you do this week, and when exactly?"]
-    ];
-    var plan = [
-      ["Week 1", "Answer the four questions above and do the first small step."],
-      ["Week 2", "Turn the step into a habit: same day, same time."],
-      ["Week 3", "Add the second step and keep the first one going."],
-      ["Week 4", "Retake this wheel and compare. Even +1 is real progress."]
-    ];
-    window.__wheelData = {areas: areas, scores: scores.slice(), avg: avg, shape: shape, focus: fi, others: others,
-      strengths: [byHigh[0], byHigh[1]], tie: tie, D: D, lvl: lvl, questions: questions, plan: plan};
-    var html = '';
-    html += '<p class="rp-k">Your full results</p>';
-    html += '<h2>Your balance score: ' + avg.toFixed(1) + ' / 10</h2>';
-    html += '<p class="rp-lead">' + esc(shape) + '</p>';
-    html += '<div class="rp-grid">';
-    html += '<div class="rp-card"><h3>Your strengths</h3><p><b>' + esc(s1.name) + '</b> (' + scores[byHigh[0]] + ') and <b>' + esc(s2.name) + '</b> (' + scores[byHigh[1]] + ').</p><p class="rp-muted">Use them as leverage. For example, if Relationships is strong, ask a friend to be your accountability partner for your focus area.</p></div>';
-    html += '<div class="rp-card rp-focus" style="--c:' + focus.color + '"><h3>Start with: ' + esc(focus.name) + ' (' + fs + ')</h3><p>' + esc(fd.means) + '</p>' + (tie ? '<p class="rp-muted">Several areas share this score. We put ' + esc(focus.name) + ' first because progress here tends to lift the others.</p>' : '') + '</div>';
-    html += '</div>';
-    html += '<h3 class="rp-h">3 small steps for this week</h3><ol class="rp-ol">' + fd.actions.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
-    if (others.length) {
-      html += '<h3 class="rp-h">Also worth attention</h3><div class="rp-grid">';
-      others.forEach(function (i) {
-        var a = areas[i], d = D[a.key];
-        html += '<div class="rp-card rp-focus" style="--c:' + a.color + '"><h3>' + esc(a.name) + ' (' + scores[i] + ')</h3><p>' + esc(d[lvl(scores[i])]) + '</p><p class="rp-muted">One step: ' + esc(d.actions[0]) + '</p></div>';
-      });
-      html += '</div><p class="rp-muted">Coaches suggest working on one area at a time. Come back to these once your first step is a habit.</p>';
-    }
-    html += '<h3 class="rp-h">Questions coaches ask (the GROW model)</h3><ul class="rp-q">' + questions.map(function (q) { return '<li><b>' + q[0] + '.</b> ' + esc(q[1]) + '</li>'; }).join('') + '</ul>';
-    html += '<h3 class="rp-h">Your 30-day plan</h3><ol class="rp-ol">' + plan.map(function (p) { return '<li><b>' + p[0] + '.</b> ' + esc(p[1]) + '</li>'; }).join('') + '</ol>';
-    html += '<h3 class="rp-h">All your areas</h3><div class="rp-table">';
-    idx.forEach(function (i) {
-      var a = areas[i], s = scores[i];
-      html += '<div class="rp-row"><span class="rp-dot" style="background:' + a.color + '"></span><span class="rp-name">' + esc(a.name) + '</span><span class="rp-bar"><i style="width:' + (s * 10) + '%;background:' + a.color + '"></i></span><b>' + s + '</b><span class="rp-tip">' + esc(D[a.key][lvl(s)]) + '</span></div>';
-    });
-    html += '</div>';
-    html += '<div class="rp-cta">';
-    html += '<button type="button" class="wq-btn wq-pdf">Download my wheel (PDF)</button> ';
-    if (focus.key === "finances") html += '<a class="wq-btn wq-btn-ghost" href="planners.html#planners">Get the Debt Payoff Planner</a>';
-    else html += '<a class="wq-btn wq-btn-ghost" href="planners.html">Browse planners</a>';
-    html += '<button type="button" class="wq-reset rp-reset">Start over</button><p class="rp-muted">Retake the wheel in 30 days to see what changed. Your answers are saved in this browser.</p></div>';
-    html += '<p class="rp-note">Based on the classic Wheel of Life coaching exercise and the GROW coaching model. General guidance, not professional advice.</p>';
-    box.innerHTML = html; box.hidden = false;
-  };
-})();
-</script>
+<script>window.LANG = "en";</script>
+<script src="js/wheel-report.js"></script>
 <script>
 (function () {
   var AREAS = [
@@ -349,6 +296,7 @@ window.buildWheelReport = (function () {
     {key: "spirituality", name: "Spirituality", color: "#A65CEB", tip: "Five quiet minutes a day: journaling, prayer or meditation."},
     {key: "family", name: "Family", color: "#FF4F9E", tip: "A shared family calendar takes the stress out of busy weeks."}
   ];
+  if (window.WL) AREAS.forEach(function (a) { a.name = window.WL.names[a.key] || a.name; });
   var C = 310, R_IN = 22, R_RING = 236, R_OUT = 300, N = AREAS.length, STEP = 360 / N, NS = "http://www.w3.org/2000/svg";
   var scores = AREAS.map(function () { return 0; });
   try { var saved = JSON.parse(localStorage.getItem("my365-wheel") || "null"); if (saved && saved.length === N) scores = saved; } catch (e) {}
@@ -421,17 +369,9 @@ window.buildWheelReport = (function () {
       li.innerHTML = '<i style="background:' + a.color + '"></i><span>' + a.name + '</span><b>' + (scores[j] || "–") + '</b>';
       list.appendChild(li);
     });
-    var res = document.getElementById("wq-result");
-    if (done === N) {
-      var low = 0; scores.forEach(function (s, j) { if (s < scores[low]) low = j; });
-      var a = AREAS[low];
-      document.getElementById("wq-low").textContent = a.name;
-      document.getElementById("wq-tip").textContent = a.tip;
-      var cta = document.getElementById("wq-cta");
-      if (a.planner) { cta.textContent = "See the Debt Payoff Planner"; cta.href = "planners.html#planners"; }
-      else { cta.textContent = "Planners for " + a.name + " are coming soon"; cta.href = "planners.html"; }
-      res.hidden = true; document.getElementById("wq-progress").hidden = false; var mm = document.getElementById("wq-muted-hint"); if (mm) mm.hidden = true; document.getElementById("wq-below").hidden = false; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
-    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var mh = document.getElementById("wq-muted-hint"); if (mh) mh.hidden = false; document.getElementById("wq-below").hidden = true; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
+    var mh = document.getElementById("wq-muted-hint"), below = document.getElementById("wq-below"), rp = document.getElementById("wq-report");
+    if (done === N) { if (mh) mh.hidden = true; below.hidden = false; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores); }
+    else { if (mh) mh.hidden = false; below.hidden = true; if (rp) rp.hidden = true; }
   }
   document.addEventListener("click", function (e) { if (!e.target.closest(".wq-reset")) return;
     scores = AREAS.map(function () { return 0; });
@@ -451,230 +391,5 @@ window.buildWheelReport = (function () {
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-/* Builds "My Wheel of Life" PDF: page 1 wheel + scores + summary, page 2 plan and advice. */
-(function () {
-  function wheelImage(cb) {
-    var src = document.getElementById("wq-svg");
-    var clone = src.cloneNode(true);
-    clone.removeAttribute("class");
-    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    clone.setAttribute("width", "620"); clone.setAttribute("height", "620");
-    clone.querySelectorAll(".wq-band").forEach(function (b) { b.style.opacity = 1; });
-    var xml = new XMLSerializer().serializeToString(clone);
-    var img = new Image();
-    img.onload = function () {
-      var c = document.createElement("canvas"); c.width = 1240; c.height = 1240;
-      var ctx = c.getContext("2d"); ctx.fillStyle = "#FAF7FF"; ctx.fillRect(0, 0, 1240, 1240);
-      ctx.drawImage(img, 0, 0, 1240, 1240); cb(c.toDataURL("image/jpeg", 0.88));
-    };
-    img.onerror = function () { cb(null); };
-    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
-  }
-  var FONTS = null;
-  function loadFonts(cb) {
-    if (FONTS !== null) return cb(FONTS);
-    var files = {corm: "fonts/corm-600.ttf", cormi: "fonts/corm-500i.ttf", lato: "fonts/lato-400.ttf", latob: "fonts/lato-700.ttf"};
-    var keys = Object.keys(files), out = {};
-    Promise.all(keys.map(function (k) {
-      return fetch(files[k]).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(function (b) {
-        var u = new Uint8Array(b), s = ""; for (var i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
-        out[k] = btoa(s);
-      });
-    })).then(function () { FONTS = out; cb(out); }, function () { FONTS = false; cb(false); });
-  }
-  function hex(h) { h = h.replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
-  function make() {
-    var W = window.__wheelData; if (!W || !window.jspdf) { alert("Please rate all 9 areas first."); return; }
-    loadFonts(function (F) { wheelImage(function (png) {
-      var doc = new window.jspdf.jsPDF({unit: "pt", format: "letter"});
-      if (F) {
-        doc.addFileToVFS("corm.ttf", F.corm); doc.addFont("corm.ttf", "Corm", "normal");
-        doc.addFileToVFS("cormi.ttf", F.cormi); doc.addFont("cormi.ttf", "CormI", "normal");
-        doc.addFileToVFS("lato.ttf", F.lato); doc.addFont("lato.ttf", "Lato", "normal");
-        doc.addFileToVFS("latob.ttf", F.latob); doc.addFont("latob.ttf", "Lato", "bold");
-      }
-      var PW = 612, PH = 792, M = 44, CW = PW - 2 * M;
-      var INK = [43, 40, 48], MUTED = [118, 112, 128], PLUM = [137, 1, 73], LINE = [228, 220, 236];
-      function mix(c, t) { return [c[0] + (255 - c[0]) * t, c[1] + (255 - c[1]) * t, c[2] + (255 - c[2]) * t]; }
-      function font(kind) {
-        if (!F) { doc.setFont("helvetica", kind === "b" || kind === "h" ? "bold" : (kind === "hi" ? "italic" : "normal")); return 1; }
-        if (kind === "h") { doc.setFont("Corm", "normal"); return 1.32; }
-        if (kind === "hi") { doc.setFont("CormI", "normal"); return 1.32; }
-        doc.setFont("Lato", kind === "b" ? "bold" : "normal"); return 1;
-      }
-      function hgt(t, size, kind, w) { var k = font(kind); doc.setFontSize(size * k); return doc.splitTextToSize(t, w).length * size * k * 1.35; }
-      function txt(t, x, y, size, kind, color, w, align) {
-        var k = font(kind); doc.setFontSize(size * k); doc.setTextColor.apply(doc, color || INK);
-        var L = w ? doc.splitTextToSize(t, w) : [t];
-        doc.text(L, x, y, {align: align || "left", lineHeightFactor: 1.35});
-        return y + L.length * size * k * 1.35;
-      }
-      function card(x, y, w, h, fill, stroke, r) {
-        doc.setFillColor.apply(doc, fill); r = r || 12;
-        if (stroke) { doc.setDrawColor.apply(doc, stroke); doc.setLineWidth(0.8); doc.roundedRect(x, y, w, h, r, r, "FD"); }
-        else doc.roundedRect(x, y, w, h, r, r, "F");
-      }
-      function band(h) {
-        var g0 = [253, 226, 238], g1 = [243, 233, 255], g2 = [228, 242, 255];
-        for (var gx = 0; gx < PW; gx += 4) {
-          var t = gx / PW, a = t < .5 ? g0 : g1, b = t < .5 ? g1 : g2, u = t < .5 ? t * 2 : (t - .5) * 2;
-          doc.setFillColor(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u); doc.rect(gx, 0, 4.5, h, "F");
-        }
-      }
-      function kicker(t, x, y, color) { doc.setCharSpace(1.2); txt(t.toUpperCase(), x, y, 7.5, "b", color || MUTED); doc.setCharSpace(0); }
-      function section(t, y, color) { doc.setFillColor.apply(doc, color || [255, 90, 150]); doc.circle(M + 4, y - 5, 3.5, "F"); return txt(t, M + 15, y, 17, "h", INK) + 4; }
-      function footer(n) {
-        doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6); doc.line(M, PH - 38, PW - M, PH - 38);
-        txt("my365plan  ·  My Wheel of Life", M, PH - 22, 8.5, "n", MUTED);
-        txt(n + " / 3", PW - M, PH - 22, 8.5, "n", MUTED, null, "right");
-      }
-      var f = W.areas[W.focus], d = W.D[f.key], fc = hex(f.color);
-      var date = new Date().toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"});
-
-      /* ---------- page 1: the wheel ---------- */
-      band(150);
-      txt("My Wheel of Life", M, 74, 32, "h", INK);
-      txt("A snapshot of your life, area by area", M, 98, 12, "hi", [110, 80, 110]);
-      txt(date, M, 120, 9, "n", MUTED);
-      card(PW - M - 140, 44, 140, 76, [255, 255, 255]);
-      kicker("Balance score", PW - M - 126, 64, PLUM);
-      txt(W.avg.toFixed(1), PW - M - 126, 104, 30, "h", PLUM);
-      txt("/ 10", PW - M - 60, 104, 12, "n", MUTED);
-
-      card(M, 168, CW, 296, [250, 247, 255]);
-      if (png) doc.addImage(png, "JPEG", M + 14, 182, 268, 268);
-      var lx = M + 304, lw = CW - 304 - 18, ly = 196;
-      kicker("Your scores", lx, ly - 2);
-      ly += 20;
-      W.areas.forEach(function (a, i) {
-        var c = hex(a.color);
-        doc.setFillColor.apply(doc, c); doc.circle(lx + 4, ly - 3.5, 3.6, "F");
-        txt(a.name, lx + 14, ly, 10, "n", INK);
-        txt(String(W.scores[i]), lx + lw, ly, 10.5, "b", INK, null, "right");
-        doc.setFillColor(236, 232, 242); doc.roundedRect(lx + 14, ly + 5, lw - 14, 5, 2.5, 2.5, "F");
-        doc.setFillColor.apply(doc, c); doc.roundedRect(lx + 14, ly + 5, (lw - 14) * W.scores[i] / 10, 5, 2.5, 2.5, "F");
-        ly += 27;
-      });
-
-      var y = 486;
-      var shH = hgt(W.shape, 12.5, "hi", CW - 40) + 34;
-      card(M, y, CW, shH, [253, 238, 245]);
-      kicker("What your wheel says", M + 20, y + 20, PLUM);
-      txt(W.shape, M + 20, y + 40, 12.5, "hi", [70, 50, 70], CW - 40);
-      y += shH + 14;
-
-      var s1 = W.areas[W.strengths[0]], s2 = W.areas[W.strengths[1]];
-      var colW = (CW - 14) / 2;
-      var stT = s1.name + " (" + W.scores[W.strengths[0]] + ") and " + s2.name + " (" + W.scores[W.strengths[1]] + "). Use them as leverage: lean on what already works to lift your focus area.";
-      var foT = d.means;
-      var bh = Math.max(hgt(stT, 10, "n", colW - 40), hgt(foT, 10, "n", colW - 40)) + 70;
-      var gC = [125, 203, 52];
-      card(M, y, colW, bh, mix(gC, .86)); doc.setFillColor.apply(doc, gC); doc.roundedRect(M, y, 6, bh, 3, 3, "F");
-      kicker("Your strengths", M + 22, y + 22, [70, 120, 30]);
-      txt(s1.name + " & " + s2.name, M + 22, y + 44, 15, "h", INK, colW - 40);
-      txt(stT, M + 22, y + 62, 10, "n", [60, 60, 66], colW - 40);
-      var x2 = M + colW + 14;
-      card(x2, y, colW, bh, mix(fc, .84)); doc.setFillColor.apply(doc, fc); doc.roundedRect(x2, y, 6, bh, 3, 3, "F");
-      kicker("Start with", x2 + 22, y + 22, mix(fc, -0.0).map(function (v) { return v * .6; }));
-      txt(f.name + " (" + W.scores[W.focus] + ")", x2 + 22, y + 44, 15, "h", INK, colW - 40);
-      txt(foT, x2 + 22, y + 62, 10, "n", [60, 60, 66], colW - 40);
-      footer(1);
-
-      /* ---------- page 2: the plan ---------- */
-      doc.addPage(); band(10);
-      kicker("Your focus area", M, 52, PLUM);
-      txt("Your plan for " + f.name, M, 84, 26, "h", INK);
-      txt("Small steps, one area at a time.", M, 106, 12, "hi", [110, 80, 110]);
-      y = 136;
-      var stepH = 0; d.actions.forEach(function (a) { stepH += Math.max(hgt(a, 10.5, "n", CW - 90), 22) + 12; });
-      card(M, y, CW, stepH + 48, mix(fc, .88));
-      kicker("3 small steps for this week", M + 20, y + 24, mix(fc, 0).map(function (v) { return v * .6; }));
-      var sy = y + 52;
-      d.actions.forEach(function (a, i) {
-        doc.setFillColor.apply(doc, fc); doc.circle(M + 34, sy - 4, 11, "F");
-        txt(String(i + 1), M + 34, sy + 0.5, 11, "b", [255, 255, 255], null, "center");
-        var e = txt(a, M + 56, sy, 10.5, "n", INK, CW - 90);
-        sy = Math.max(e, sy + 22) + 12;
-      });
-      y += stepH + 48 + 18;
-
-      if (W.others.length) {
-        y = section("Also worth attention", y + 6, [255, 148, 24]);
-        var n = W.others.length, ow = (CW - 14 * (n - 1)) / n, oh = 0;
-        W.others.forEach(function (i) { var a = W.areas[i], dd = W.D[a.key]; oh = Math.max(oh, hgt(dd[W.lvl(W.scores[i])] + " Step: " + dd.actions[0], 9.5, "n", ow - 36)); });
-        oh += 58;
-        W.others.forEach(function (i, k) {
-          var a = W.areas[i], dd = W.D[a.key], c = hex(a.color), ox = M + k * (ow + 14);
-          card(ox, y, ow, oh, mix(c, .87)); doc.setFillColor.apply(doc, c); doc.roundedRect(ox, y, ow, 6, 3, 3, "F");
-          txt(a.name + " · " + W.scores[i], ox + 18, y + 30, 14, "h", INK);
-          txt(dd[W.lvl(W.scores[i])] + " Step: " + dd.actions[0], ox + 18, y + 48, 9.5, "n", [60, 60, 66], ow - 36);
-        });
-        y += oh + 22;
-      }
-
-      y = section("Questions coaches ask", y + 6, [43, 127, 242]);
-      txt("The GROW coaching model. Write your answers on the lines.", M + 15, y + 2, 10, "hi", MUTED);
-      y += 16;
-      var gw = (CW - 14) / 2, gh = Math.min(132, (PH - 60 - y - 14) / 2);
-      W.questions.forEach(function (q, i) {
-        var gx = M + (i % 2) * (gw + 14), gy = y + Math.floor(i / 2) * (gh + 14);
-        card(gx, gy, gw, gh, [255, 255, 255], LINE);
-        doc.setFillColor(243, 233, 255); doc.circle(gx + 26, gy + 26, 13, "F");
-        txt(q[0].charAt(0), gx + 26, gy + 32, 16, "h", [90, 50, 150], null, "center");
-        txt(q[0], gx + 46, gy + 24, 9, "b", [90, 50, 150]);
-        var qe = txt(q[1], gx + 46, gy + 38, 9.5, "n", INK, gw - 62);
-        doc.setDrawColor(214, 206, 224); doc.setLineWidth(0.6);
-        for (var l = Math.max(qe + 14, gy + 62); l < gy + gh - 8; l += 20) doc.line(gx + 18, l, gx + gw - 18, l);
-      });
-      footer(2);
-
-      /* ---------- page 3: 30 days + all areas ---------- */
-      doc.addPage(); band(10);
-      kicker("Keep going", M, 52, PLUM);
-      txt("Your 30-day plan", M, 84, 26, "h", INK);
-      y = 106;
-      var tw = (CW - 3 * 10) / 4, th = 0;
-      W.plan.forEach(function (p) { th = Math.max(th, hgt(p[1], 9.5, "n", tw - 28)); });
-      th += 74;
-      var tc = [[253, 226, 238], [243, 233, 255], [228, 242, 255], [232, 247, 225]];
-      W.plan.forEach(function (p, i) {
-        var tx = M + i * (tw + 10);
-        card(tx, y, tw, th, tc[i]);
-        txt(p[0], tx + 14, y + 30, 18, "h", INK);
-        txt(p[1], tx + 14, y + 50, 9.5, "n", [60, 60, 66], tw - 28);
-        doc.setDrawColor(120, 110, 130); doc.setLineWidth(0.9); doc.roundedRect(tx + tw - 26, y + 14, 13, 13, 3, 3, "S");
-      });
-      y += th + 30;
-
-      y = section("All your areas", y, [255, 90, 78]);
-      y += 4;
-      var aw = (CW - 2 * 10) / 3, ah = 0;
-      W.areas.forEach(function (a, i) { ah = Math.max(ah, hgt(W.D[a.key][W.lvl(W.scores[i])], 8.8, "n", aw - 28)); });
-      ah += 46;
-      W.areas.forEach(function (a, i) {
-        var c = hex(a.color), ax = M + (i % 3) * (aw + 10), ay = y + Math.floor(i / 3) * (ah + 10);
-        card(ax, ay, aw, ah, mix(c, .9)); doc.setFillColor.apply(doc, c); doc.roundedRect(ax, ay, aw, 5, 2.5, 2.5, "F");
-        txt(a.name, ax + 14, ay + 24, 10, "b", INK);
-        txt(String(W.scores[i]), ax + aw - 14, ay + 26, 18, "h", c.map(function (v) { return v * .7; }), null, "right");
-        txt(W.D[a.key][W.lvl(W.scores[i])], ax + 14, ay + 40, 8.8, "n", [70, 70, 76], aw - 28);
-      });
-      y += 3 * (ah + 10) + 14;
-
-      var nh = PH - 60 - y;
-      if (nh > 70) {
-        card(M, y, CW, nh, [252, 250, 255], LINE);
-        kicker("My notes", M + 18, y + 22);
-        doc.setDrawColor(222, 214, 232); doc.setLineWidth(0.6);
-        for (var nl = y + 46; nl < y + nh - 10; nl += 22) doc.line(M + 18, nl, PW - M - 18, nl);
-      }
-      txt("Based on the Wheel of Life coaching exercise and the GROW model. General guidance, not professional advice.", PW / 2, PH - 48, 7.5, "n", MUTED, null, "center");
-      footer(3);
-      doc.save("my-wheel-of-life.pdf");
-    }); });
-  }
-  document.addEventListener("click", function (e) { if (e.target.closest(".wq-pdf")) { e.preventDefault(); make(); } });
-})();
-</script>
 </body>
 </html>
