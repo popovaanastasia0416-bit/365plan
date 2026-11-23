@@ -136,6 +136,34 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .wq{position:relative;isolation:isolate;margin:0 0 20px !important;padding:22px 0 26px}
 .wq::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:-1;background:linear-gradient(120deg,#FDE7F0 0%,#F4ECFF 45%,#E6F4FF 100%)}
 .wq-list li.hl{background:rgba(255,255,255,.75)}
+
+.wq-more{display:block;margin-top:12px;font-size:16px;color:#222}
+.wq-report{max-width:860px;margin:40px auto 10px;scroll-margin-top:90px}
+.wq-report[hidden]{display:none}
+.rp-k{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#777}
+.wq-report h2{font-size:clamp(28px,3.4vw,38px);font-weight:500;margin:6px 0 8px}
+.rp-lead{font-size:19px;color:#333;line-height:1.5}
+.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 8px}
+.rp-card{border:1px solid #e3e3e3;padding:18px 20px}
+.rp-card h3{font-size:21px;font-weight:600;margin-bottom:6px}
+.rp-card p{font-size:17px;line-height:1.5}
+.rp-focus{border-left:5px solid var(--c)}
+.rp-muted{color:#666;font-size:16px;margin-top:6px;line-height:1.5}
+.rp-h{font-size:24px;font-weight:600;margin:28px 0 10px}
+.rp-ol{padding-left:22px;font-size:18px;line-height:1.55}
+.rp-ol li{margin-bottom:6px}
+.rp-q{list-style:none;font-size:18px;line-height:1.55}
+.rp-q li{padding:10px 14px;background:#f7f7f9;margin-bottom:8px}
+.rp-table{display:grid;gap:10px}
+.rp-row{display:grid;grid-template-columns:12px 150px 1fr 28px;gap:4px 12px;align-items:center;font-size:17px}
+.rp-dot{width:10px;height:10px;border-radius:50%}
+.rp-bar{height:8px;background:#eee;position:relative}
+.rp-bar i{position:absolute;left:0;top:0;bottom:0}
+.rp-row b{text-align:right}
+.rp-tip{grid-column:2/-1;font-size:15px;color:#666;margin-bottom:6px}
+.rp-cta{margin:28px 0 10px}
+.rp-note{font-size:14px;color:#888;margin-top:16px}
+@media (max-width:700px){.rp-grid{grid-template-columns:1fr}.rp-row{grid-template-columns:12px 110px 1fr 24px}}
 </style>
 </head>
 <body>
@@ -160,11 +188,13 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
           <p class="wq-big">Your lowest area is <b id="wq-low">Finances</b>. Start here.</p>
           <p class="wq-muted" id="wq-tip"></p>
           <a class="wq-btn" id="wq-cta" href="planners.html">See planners</a>
+          <a class="wq-more" href="#wq-report">Read your full results ↓</a>
           <button type="button" class="wq-reset" id="wq-reset">Start over</button>
         </div>
       </aside>
     </div>
   </section>
+  <section class="wq-report" id="wq-report" hidden></section>
   <section class="articles" id="articles">
     <h2>Articles</h2>
     <div class="art-grid"><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article><article class="art"><div class="art-img"></div><p class="art-cat">Article</p><h3>Coming soon</h3></article></div>
@@ -177,6 +207,105 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 </footer>
 
 <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+<script>
+/* Full Wheel of Life report: built when all 9 areas are rated. */
+window.buildWheelReport = (function () {
+  var D = {
+    health: {
+      means: "Energy, sleep, movement and how you eat. When this area is low, every other area gets harder.",
+      actions: ["Go to bed at the same time for 7 nights in a row.", "Add a 20-minute walk to three days this week.", "Plan tomorrow's meals tonight, even roughly."],
+      low: "Start with sleep: it is the cheapest fix with the biggest effect.", mid: "Pick one habit (water, steps, bedtime) and track it daily.", high: "Protect your routine on busy weeks; it is your base for everything else."
+    },
+    career: {
+      means: "Your work, growth and sense of progress. A low score often comes from feeling stuck, not from the job itself.",
+      actions: ["Write down what a 10 at work would look like in one paragraph.", "Name one skill to grow this quarter and book the first hour of learning.", "Have one conversation this week about your next step (manager, mentor, friend)."],
+      low: "Separate what you can change now from what needs a bigger move.", mid: "Set one 90-day goal with a clear finish line.", high: "Share what you know: mentoring others keeps this area strong."
+    },
+    finances: {
+      means: "How in control you feel of money: debts, savings, spending. Low scores usually mean uncertainty more than a lack of income.",
+      actions: ["List every debt with its balance, rate and minimum payment.", "Write a simple monthly budget: income, must-pay bills, what is left.", "Start a small emergency fund, even $5 a week."],
+      low: "Clarity first: knowing your exact numbers lowers stress on its own.", mid: "Pick one method (snowball or avalanche) and automate one payment.", high: "Grow your cushion to 3 to 6 months of expenses and set a new goal."
+    },
+    hobbies: {
+      means: "Things you do just because you enjoy them. Hobbies refill the energy the other areas use.",
+      actions: ["Make a list of 5 things you loved doing as a kid.", "Block one hour this week for one of them.", "Try one free class, video or local group."],
+      low: "Treat fun as a real appointment, not a reward for later.", mid: "Keep one hobby going weekly so it becomes a habit.", high: "Share it: a hobby with friends counts twice."
+    },
+    growth: {
+      means: "Learning, confidence and becoming who you want to be.",
+      actions: ["Choose one book or course and set a 15-minute daily slot.", "Write down three things you did well this week.", "Pick one small fear and do it once."],
+      low: "Small daily progress beats big plans you never start.", mid: "Track one learning habit for 30 days.", high: "Set a stretch goal that scares you a little."
+    },
+    relationships: {
+      means: "Partner and friends: how connected and supported you feel.",
+      actions: ["Message two people you miss today.", "Plan one quality evening with no phones.", "Ask someone close: what is one thing I could do better for you?"],
+      low: "Reach out first; most people are waiting for someone else to.", mid: "Put regular time with your people in the calendar.", high: "Be the one who organizes: it keeps the circle strong."
+    },
+    recreation: {
+      means: "Rest and recovery: time off, trips, real breaks.",
+      actions: ["Put one fully free evening in your calendar this week.", "Plan a day trip or a small treat for this month.", "Turn off work notifications after a set hour."],
+      low: "Rest is not a reward for finishing everything; schedule it first.", mid: "Plan your next real break now, even a short one.", high: "Keep your boundaries when life gets busy."
+    },
+    spirituality: {
+      means: "Inner calm, meaning and values, whatever that means for you.",
+      actions: ["Spend 5 quiet minutes each morning: journaling, prayer or breathing.", "Write down your top 3 values and check one choice against them.", "Spend time in nature this week."],
+      low: "Start with five minutes of quiet a day; consistency matters more than length.", mid: "Link a daily practice to something you already do, like morning coffee.", high: "Use this calm as an anchor for the areas that feel shaky."
+    },
+    family: {
+      means: "Relationships with parents, siblings and children.",
+      actions: ["Plan one shared meal or call this week.", "Start a shared family calendar for the busy days.", "Ask each family member what would make home feel easier."],
+      low: "One small ritual (a weekly call, a Sunday dinner) rebuilds connection.", mid: "Plan family time ahead instead of fitting it in.", high: "Share the load so it stays good for everyone."
+    }
+  };
+  function lvl(s) { return s <= 4 ? "low" : s <= 7 ? "mid" : "high"; }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); }
+  return function (areas, scores) {
+    var box = document.getElementById("wq-report"); if (!box) return;
+    var idx = areas.map(function (a, i) { return i; });
+    var byLow = idx.slice().sort(function (x, y) { return scores[x] - scores[y]; });
+    var byHigh = idx.slice().sort(function (x, y) { return scores[y] - scores[x]; });
+    var avg = scores.reduce(function (s, v) { return s + v; }, 0) / scores.length;
+    var spread = scores[byHigh[0]] - scores[byLow[0]];
+    var shape = spread <= 3 ? "Your wheel is fairly round: no area is far behind the others. Now you can raise the whole wheel, one area at a time."
+      : spread <= 5 ? "Your wheel is a little uneven: one or two areas are pulling the ride off balance. Fixing the lowest one usually lifts the others too."
+      : "Your wheel is uneven: there is a big gap between your strongest and weakest areas. A bumpy wheel makes the whole ride harder, so start with the lowest area.";
+    var focus = areas[byLow[0]], fs = scores[byLow[0]], fd = D[focus.key];
+    var s1 = areas[byHigh[0]], s2 = areas[byHigh[1]];
+    var html = '';
+    html += '<p class="rp-k">Your full results</p>';
+    html += '<h2>Your balance score: ' + avg.toFixed(1) + ' / 10</h2>';
+    html += '<p class="rp-lead">' + esc(shape) + '</p>';
+    html += '<div class="rp-grid">';
+    html += '<div class="rp-card"><h3>Your strengths</h3><p><b>' + esc(s1.name) + '</b> (' + scores[byHigh[0]] + ') and <b>' + esc(s2.name) + '</b> (' + scores[byHigh[1]] + ').</p><p class="rp-muted">Use them as leverage. For example, if Relationships is strong, ask a friend to be your accountability partner for your focus area.</p></div>';
+    html += '<div class="rp-card rp-focus" style="--c:' + focus.color + '"><h3>Your focus area: ' + esc(focus.name) + ' (' + fs + ')</h3><p>' + esc(fd.means) + '</p></div>';
+    html += '</div>';
+    html += '<h3 class="rp-h">3 small steps for this week</h3><ol class="rp-ol">' + fd.actions.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
+    var next = Math.min(10, fs + 1);
+    html += '<h3 class="rp-h">Questions coaches ask (the GROW model)</h3><ul class="rp-q">';
+    html += '<li><b>Goal.</b> What would a 10 in ' + esc(focus.name) + ' look like for you in one sentence?</li>';
+    html += '<li><b>Reality.</b> Why is it a ' + fs + ' and not lower? What is already working?</li>';
+    html += '<li><b>Options.</b> What would move it from ' + fs + ' to ' + next + '? List three ideas, even small ones.</li>';
+    html += '<li><b>Will.</b> Which one will you do this week, and when exactly?</li></ul>';
+    html += '<h3 class="rp-h">Your 30-day plan</h3><ol class="rp-ol">';
+    html += '<li><b>Week 1.</b> Answer the four questions above and do the first small step.</li>';
+    html += '<li><b>Week 2.</b> Turn the step into a habit: same day, same time.</li>';
+    html += '<li><b>Week 3.</b> Add the second step and keep the first one going.</li>';
+    html += '<li><b>Week 4.</b> Retake this wheel and compare. Even +1 is real progress.</li></ol>';
+    html += '<h3 class="rp-h">All your areas</h3><div class="rp-table">';
+    idx.forEach(function (i) {
+      var a = areas[i], s = scores[i];
+      html += '<div class="rp-row"><span class="rp-dot" style="background:' + a.color + '"></span><span class="rp-name">' + esc(a.name) + '</span><span class="rp-bar"><i style="width:' + (s * 10) + '%;background:' + a.color + '"></i></span><b>' + s + '</b><span class="rp-tip">' + esc(D[a.key][lvl(s)]) + '</span></div>';
+    });
+    html += '</div>';
+    html += '<div class="rp-cta">';
+    if (focus.key === "finances") html += '<a class="wq-btn" href="planners.html#planners">Get the Debt Payoff Planner</a>';
+    else html += '<a class="wq-btn" href="planners.html">Browse planners</a>';
+    html += '<p class="rp-muted">Retake the wheel in 30 days to see what changed. Your answers are saved in this browser.</p></div>';
+    html += '<p class="rp-note">Based on the classic Wheel of Life coaching exercise and the GROW coaching model. General guidance, not professional advice.</p>';
+    box.innerHTML = html; box.hidden = false;
+  };
+})();
+</script>
 <script>
 (function () {
   var AREAS = [
@@ -271,8 +400,8 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
       var cta = document.getElementById("wq-cta");
       if (a.planner) { cta.textContent = "See the Debt Payoff Planner"; cta.href = "planners.html#planners"; }
       else { cta.textContent = "Planners for " + a.name + " are coming soon"; cta.href = "planners.html"; }
-      res.hidden = false; document.getElementById("wq-progress").hidden = true;
-    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; }
+      res.hidden = false; document.getElementById("wq-progress").hidden = true; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
+    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
   }
   document.getElementById("wq-reset").addEventListener("click", function () {
     scores = AREAS.map(function () { return 0; });
