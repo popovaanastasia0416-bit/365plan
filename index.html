@@ -165,6 +165,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
 .rp-row b{text-align:right}
 .rp-tip{grid-column:2/-1;font-size:15px;color:#666;margin-bottom:6px}
 .rp-cta{margin:28px 0 10px}
+.rp-reset{display:inline-block;margin:0 0 0 14px;vertical-align:middle}
 .rp-note{font-size:14px;color:#888;margin-top:16px}
 @media (max-width:700px){.rp-grid{grid-template-columns:1fr}.rp-row{grid-template-columns:12px 110px 1fr 24px}}
 </style>
@@ -184,7 +185,7 @@ dialog#look .x{position:absolute;right:12px;top:6px;border:0;background:none;fon
         <div class="wq-intro">
       <h1>How balanced is your life?</h1>
     </div>
-        <div id="wq-progress"><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted">Click a ring: 1 in the centre, 10 at the edge.</p></div>
+        <div id="wq-progress"><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted" id="wq-muted-hint">Click a ring: 1 in the centre, 10 at the edge.</p></div>
         <ol class="wq-list" id="wq-list"></ol>
         <div id="wq-result" hidden>
           <p class="wq-k">Your result</p>
@@ -326,7 +327,7 @@ window.buildWheelReport = (function () {
     html += '<button type="button" class="wq-btn wq-pdf">Download my wheel (PDF)</button> ';
     if (focus.key === "finances") html += '<a class="wq-btn wq-btn-ghost" href="planners.html#planners">Get the Debt Payoff Planner</a>';
     else html += '<a class="wq-btn wq-btn-ghost" href="planners.html">Browse planners</a>';
-    html += '<p class="rp-muted">Retake the wheel in 30 days to see what changed. Your answers are saved in this browser.</p></div>';
+    html += '<button type="button" class="wq-reset rp-reset">Start over</button><p class="rp-muted">Retake the wheel in 30 days to see what changed. Your answers are saved in this browser.</p></div>';
     html += '<p class="rp-note">Based on the classic Wheel of Life coaching exercise and the GROW coaching model. General guidance, not professional advice.</p>';
     box.innerHTML = html; box.hidden = false;
   };
@@ -426,13 +427,13 @@ window.buildWheelReport = (function () {
       var cta = document.getElementById("wq-cta");
       if (a.planner) { cta.textContent = "See the Debt Payoff Planner"; cta.href = "planners.html#planners"; }
       else { cta.textContent = "Planners for " + a.name + " are coming soon"; cta.href = "planners.html"; }
-      res.hidden = false; document.getElementById("wq-progress").hidden = true; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
-    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
+      res.hidden = true; document.getElementById("wq-progress").hidden = false; var mm = document.getElementById("wq-muted-hint"); if (mm) mm.innerHTML = '<a class="wq-more" href="#wq-report">Your results are below ↓</a>'; if (window.buildWheelReport) window.buildWheelReport(AREAS, scores);
+    } else { res.hidden = true; document.getElementById("wq-progress").hidden = false; var mh = document.getElementById("wq-muted-hint"); if (mh) mh.textContent = "Click a ring: 1 in the centre, 10 at the edge."; var rp = document.getElementById("wq-report"); if (rp) rp.hidden = true; }
   }
-  document.getElementById("wq-reset").addEventListener("click", function () {
+  document.addEventListener("click", function (e) { if (!e.target.closest(".wq-reset")) return;
     scores = AREAS.map(function () { return 0; });
     try { localStorage.removeItem("my365-wheel"); } catch (e) {}
-    render();
+    render(); window.scrollTo({top: 0, behavior: "smooth"});
   });
   render();
   /* spin until the visitor starts rating */
