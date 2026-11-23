@@ -461,7 +461,7 @@ window.buildWheelReport = (function () {
     var img = new Image();
     img.onload = function () {
       var c = document.createElement("canvas"); c.width = 1240; c.height = 1240;
-      var ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, 1240, 1240);
+      var ctx = c.getContext("2d"); ctx.fillStyle = "#FAF7FF"; ctx.fillRect(0, 0, 1240, 1240);
       ctx.drawImage(img, 0, 0, 1240, 1240); cb(c.toDataURL("image/jpeg", 0.88));
     };
     img.onerror = function () { cb(null); };
@@ -490,63 +490,182 @@ window.buildWheelReport = (function () {
         doc.addFileToVFS("lato.ttf", F.lato); doc.addFont("lato.ttf", "Lato", "normal");
         doc.addFileToVFS("latob.ttf", F.latob); doc.addFont("latob.ttf", "Lato", "bold");
       }
-      var PW = 612, M = 48, y = 0;
-      function text(t, x, yy, size, style, color, maxW) {
-        var head = style === "bold" && size >= 13;
-        if (F && head) { doc.setFont("Corm", "normal"); size = size * 1.3; }
-        else if (F && style === "italic") { doc.setFont("CormI", "normal"); size = size * 1.3; }
-        else if (F) { doc.setFont("Lato", style === "bold" ? "bold" : "normal"); }
-        else doc.setFont("helvetica", style === "italic" ? "normal" : (style || "normal"));
-        doc.setFontSize(size); doc.setTextColor.apply(doc, color || [34, 34, 34]);
-        var lines = doc.splitTextToSize(t, maxW || PW - 2 * M); doc.text(lines, x, yy); return yy + lines.length * size * 1.3;
+      var PW = 612, PH = 792, M = 44, CW = PW - 2 * M;
+      var INK = [43, 40, 48], MUTED = [118, 112, 128], PLUM = [137, 1, 73], LINE = [228, 220, 236];
+      function mix(c, t) { return [c[0] + (255 - c[0]) * t, c[1] + (255 - c[1]) * t, c[2] + (255 - c[2]) * t]; }
+      function font(kind) {
+        if (!F) { doc.setFont("helvetica", kind === "b" || kind === "h" ? "bold" : (kind === "hi" ? "italic" : "normal")); return 1; }
+        if (kind === "h") { doc.setFont("Corm", "normal"); return 1.32; }
+        if (kind === "hi") { doc.setFont("CormI", "normal"); return 1.32; }
+        doc.setFont("Lato", kind === "b" ? "bold" : "normal"); return 1;
       }
-      function need(h) { if (y + h > 750) { doc.addPage(); y = 56; } }
-      /* page 1 */
-      var g0 = [253, 231, 240], g1 = [244, 236, 255], g2 = [230, 244, 255];
-      for (var gx = 0; gx < PW; gx += 4) { var t = gx / PW, a = t < .5 ? g0 : g1, b = t < .5 ? g1 : g2, u = t < .5 ? t * 2 : (t - .5) * 2;
-        doc.setFillColor(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u); doc.rect(gx, 0, 4.5, 124, "F"); }
-      y = text("My Wheel of Life", M, 62, 26, "bold");
-      text("my365plan  ·  " + new Date().toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"}), M, 82, 11, "normal", [90, 90, 90]);
-      text("Balance score: " + W.avg.toFixed(1) + " / 10", M, 108, 12, "italic", [137, 1, 73]);
-      if (png) doc.addImage(png, "JPEG", M, 140, 300, 300);
-      var lx = M + 320, ly = 160;
+      function hgt(t, size, kind, w) { var k = font(kind); doc.setFontSize(size * k); return doc.splitTextToSize(t, w).length * size * k * 1.35; }
+      function txt(t, x, y, size, kind, color, w, align) {
+        var k = font(kind); doc.setFontSize(size * k); doc.setTextColor.apply(doc, color || INK);
+        var L = w ? doc.splitTextToSize(t, w) : [t];
+        doc.text(L, x, y, {align: align || "left", lineHeightFactor: 1.35});
+        return y + L.length * size * k * 1.35;
+      }
+      function card(x, y, w, h, fill, stroke, r) {
+        doc.setFillColor.apply(doc, fill); r = r || 12;
+        if (stroke) { doc.setDrawColor.apply(doc, stroke); doc.setLineWidth(0.8); doc.roundedRect(x, y, w, h, r, r, "FD"); }
+        else doc.roundedRect(x, y, w, h, r, r, "F");
+      }
+      function band(h) {
+        var g0 = [253, 226, 238], g1 = [243, 233, 255], g2 = [228, 242, 255];
+        for (var gx = 0; gx < PW; gx += 4) {
+          var t = gx / PW, a = t < .5 ? g0 : g1, b = t < .5 ? g1 : g2, u = t < .5 ? t * 2 : (t - .5) * 2;
+          doc.setFillColor(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u); doc.rect(gx, 0, 4.5, h, "F");
+        }
+      }
+      function kicker(t, x, y, color) { doc.setCharSpace(1.2); txt(t.toUpperCase(), x, y, 7.5, "b", color || MUTED); doc.setCharSpace(0); }
+      function section(t, y, color) { doc.setFillColor.apply(doc, color || [255, 90, 150]); doc.circle(M + 4, y - 5, 3.5, "F"); return txt(t, M + 15, y, 17, "h", INK) + 4; }
+      function footer(n) {
+        doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6); doc.line(M, PH - 38, PW - M, PH - 38);
+        txt("my365plan  ·  My Wheel of Life", M, PH - 22, 8.5, "n", MUTED);
+        txt(n + " / 3", PW - M, PH - 22, 8.5, "n", MUTED, null, "right");
+      }
+      var f = W.areas[W.focus], d = W.D[f.key], fc = hex(f.color);
+      var date = new Date().toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"});
+
+      /* ---------- page 1: the wheel ---------- */
+      band(150);
+      txt("My Wheel of Life", M, 74, 32, "h", INK);
+      txt("A snapshot of your life, area by area", M, 98, 12, "hi", [110, 80, 110]);
+      txt(date, M, 120, 9, "n", MUTED);
+      card(PW - M - 140, 44, 140, 76, [255, 255, 255]);
+      kicker("Balance score", PW - M - 126, 64, PLUM);
+      txt(W.avg.toFixed(1), PW - M - 126, 104, 30, "h", PLUM);
+      txt("/ 10", PW - M - 60, 104, 12, "n", MUTED);
+
+      card(M, 168, CW, 296, [250, 247, 255]);
+      if (png) doc.addImage(png, "JPEG", M + 14, 182, 268, 268);
+      var lx = M + 304, lw = CW - 304 - 18, ly = 196;
+      kicker("Your scores", lx, ly - 2);
+      ly += 20;
       W.areas.forEach(function (a, i) {
-        doc.setFillColor.apply(doc, hex(a.color)); doc.circle(lx + 5, ly - 4, 4, "F");
-        text(a.name, lx + 16, ly, 11); text(String(W.scores[i]), PW - M - 14, ly, 11, "bold");
-        doc.setFillColor(235, 235, 235); doc.rect(lx + 16, ly + 5, 160, 4, "F");
-        doc.setFillColor.apply(doc, hex(a.color)); doc.rect(lx + 16, ly + 5, 16 * W.scores[i], 4, "F");
-        ly += 30;
+        var c = hex(a.color);
+        doc.setFillColor.apply(doc, c); doc.circle(lx + 4, ly - 3.5, 3.6, "F");
+        txt(a.name, lx + 14, ly, 10, "n", INK);
+        txt(String(W.scores[i]), lx + lw, ly, 10.5, "b", INK, null, "right");
+        doc.setFillColor(236, 232, 242); doc.roundedRect(lx + 14, ly + 5, lw - 14, 5, 2.5, 2.5, "F");
+        doc.setFillColor.apply(doc, c); doc.roundedRect(lx + 14, ly + 5, (lw - 14) * W.scores[i] / 10, 5, 2.5, 2.5, "F");
+        ly += 27;
       });
-      y = 470;
-      y = text(W.shape, M, y, 11.5, "italic", [70, 70, 70]) + 8;
-      var f = W.areas[W.focus], d = W.D[f.key];
+
+      var y = 486;
+      var shH = hgt(W.shape, 12.5, "hi", CW - 40) + 34;
+      card(M, y, CW, shH, [253, 238, 245]);
+      kicker("What your wheel says", M + 20, y + 20, PLUM);
+      txt(W.shape, M + 20, y + 40, 12.5, "hi", [70, 50, 70], CW - 40);
+      y += shH + 14;
+
       var s1 = W.areas[W.strengths[0]], s2 = W.areas[W.strengths[1]];
-      y = text("Your strengths", M, y, 14, "bold") + 2;
-      y = text(s1.name + " (" + W.scores[W.strengths[0]] + ") and " + s2.name + " (" + W.scores[W.strengths[1]] + "). Use them as leverage for your focus area.", M, y, 11) + 10;
-      doc.setFillColor.apply(doc, hex(f.color)); doc.rect(M, y - 12, 4, 60, "F");
-      y = text("Start with: " + f.name + " (" + W.scores[W.focus] + ")", M + 12, y, 14, "bold") + 2;
-      y = text(d.means, M + 12, y, 11, "normal", [51, 51, 51], PW - 2 * M - 12) + 16;
-      y = text("All your areas", M, y, 14, "bold") + 2;
-      W.areas.forEach(function (a, i) { y = text(a.name + " · " + W.scores[i] + "/10 — " + W.D[a.key][W.lvl(W.scores[i])], M, y, 9.5, "normal", [51, 51, 51]) + 1; });
-      /* page 2 */
-      doc.addPage(); y = 60;
-      y = text("Your plan for " + f.name, M, y, 20, "bold") + 8;
-      y = text("3 small steps for this week", M, y, 14, "bold") + 2;
-      d.actions.forEach(function (a, i) { y = text((i + 1) + ".  " + a, M, y, 11) + 2; });
-      y += 10;
+      var colW = (CW - 14) / 2;
+      var stT = s1.name + " (" + W.scores[W.strengths[0]] + ") and " + s2.name + " (" + W.scores[W.strengths[1]] + "). Use them as leverage: lean on what already works to lift your focus area.";
+      var foT = d.means;
+      var bh = Math.max(hgt(stT, 10, "n", colW - 40), hgt(foT, 10, "n", colW - 40)) + 70;
+      var gC = [125, 203, 52];
+      card(M, y, colW, bh, mix(gC, .86)); doc.setFillColor.apply(doc, gC); doc.roundedRect(M, y, 6, bh, 3, 3, "F");
+      kicker("Your strengths", M + 22, y + 22, [70, 120, 30]);
+      txt(s1.name + " & " + s2.name, M + 22, y + 44, 15, "h", INK, colW - 40);
+      txt(stT, M + 22, y + 62, 10, "n", [60, 60, 66], colW - 40);
+      var x2 = M + colW + 14;
+      card(x2, y, colW, bh, mix(fc, .84)); doc.setFillColor.apply(doc, fc); doc.roundedRect(x2, y, 6, bh, 3, 3, "F");
+      kicker("Start with", x2 + 22, y + 22, mix(fc, -0.0).map(function (v) { return v * .6; }));
+      txt(f.name + " (" + W.scores[W.focus] + ")", x2 + 22, y + 44, 15, "h", INK, colW - 40);
+      txt(foT, x2 + 22, y + 62, 10, "n", [60, 60, 66], colW - 40);
+      footer(1);
+
+      /* ---------- page 2: the plan ---------- */
+      doc.addPage(); band(10);
+      kicker("Your focus area", M, 52, PLUM);
+      txt("Your plan for " + f.name, M, 84, 26, "h", INK);
+      txt("Small steps, one area at a time.", M, 106, 12, "hi", [110, 80, 110]);
+      y = 136;
+      var stepH = 0; d.actions.forEach(function (a) { stepH += Math.max(hgt(a, 10.5, "n", CW - 90), 22) + 12; });
+      card(M, y, CW, stepH + 48, mix(fc, .88));
+      kicker("3 small steps for this week", M + 20, y + 24, mix(fc, 0).map(function (v) { return v * .6; }));
+      var sy = y + 52;
+      d.actions.forEach(function (a, i) {
+        doc.setFillColor.apply(doc, fc); doc.circle(M + 34, sy - 4, 11, "F");
+        txt(String(i + 1), M + 34, sy + 0.5, 11, "b", [255, 255, 255], null, "center");
+        var e = txt(a, M + 56, sy, 10.5, "n", INK, CW - 90);
+        sy = Math.max(e, sy + 22) + 12;
+      });
+      y += stepH + 48 + 18;
+
       if (W.others.length) {
-        y = text("Also worth attention", M, y, 14, "bold") + 2;
-        W.others.forEach(function (i) { var a = W.areas[i]; y = text(a.name + " (" + W.scores[i] + "): " + W.D[a.key][W.lvl(W.scores[i])] + " One step: " + W.D[a.key].actions[0], M, y, 11) + 4; });
-        y += 8;
+        y = section("Also worth attention", y + 6, [255, 148, 24]);
+        var n = W.others.length, ow = (CW - 14 * (n - 1)) / n, oh = 0;
+        W.others.forEach(function (i) { var a = W.areas[i], dd = W.D[a.key]; oh = Math.max(oh, hgt(dd[W.lvl(W.scores[i])] + " Step: " + dd.actions[0], 9.5, "n", ow - 36)); });
+        oh += 58;
+        W.others.forEach(function (i, k) {
+          var a = W.areas[i], dd = W.D[a.key], c = hex(a.color), ox = M + k * (ow + 14);
+          card(ox, y, ow, oh, mix(c, .87)); doc.setFillColor.apply(doc, c); doc.roundedRect(ox, y, ow, 6, 3, 3, "F");
+          txt(a.name + " · " + W.scores[i], ox + 18, y + 30, 14, "h", INK);
+          txt(dd[W.lvl(W.scores[i])] + " Step: " + dd.actions[0], ox + 18, y + 48, 9.5, "n", [60, 60, 66], ow - 36);
+        });
+        y += oh + 22;
       }
-      y = text("Questions coaches ask (GROW model)", M, y, 14, "bold") + 2;
-      W.questions.forEach(function (q) { y = text(q[0] + ". " + q[1], M, y, 11) + 2; doc.setDrawColor(190, 190, 190); doc.line(M, y + 8, PW - M, y + 8); doc.line(M, y + 26, PW - M, y + 26); y += 36; });
-      y += 14; need(120);
-      y = text("Your 30-day plan", M, y, 14, "bold") + 2;
-      W.plan.forEach(function (p) { doc.setDrawColor(60, 60, 60); doc.rect(M, y - 9, 9, 9); y = text(p[0] + ". " + p[1], M + 16, y, 11) + 4; });
-      y += 10;
-      need(50); y += 14;
-      text("Based on the Wheel of Life coaching exercise and the GROW model. General guidance, not professional advice. my365plan", M, y, 9, "normal", [130, 130, 130]);
+
+      y = section("Questions coaches ask", y + 6, [43, 127, 242]);
+      txt("The GROW coaching model. Write your answers on the lines.", M + 15, y + 2, 10, "hi", MUTED);
+      y += 16;
+      var gw = (CW - 14) / 2, gh = Math.min(132, (PH - 60 - y - 14) / 2);
+      W.questions.forEach(function (q, i) {
+        var gx = M + (i % 2) * (gw + 14), gy = y + Math.floor(i / 2) * (gh + 14);
+        card(gx, gy, gw, gh, [255, 255, 255], LINE);
+        doc.setFillColor(243, 233, 255); doc.circle(gx + 26, gy + 26, 13, "F");
+        txt(q[0].charAt(0), gx + 26, gy + 32, 16, "h", [90, 50, 150], null, "center");
+        txt(q[0], gx + 46, gy + 24, 9, "b", [90, 50, 150]);
+        var qe = txt(q[1], gx + 46, gy + 38, 9.5, "n", INK, gw - 62);
+        doc.setDrawColor(214, 206, 224); doc.setLineWidth(0.6);
+        for (var l = Math.max(qe + 14, gy + 62); l < gy + gh - 8; l += 20) doc.line(gx + 18, l, gx + gw - 18, l);
+      });
+      footer(2);
+
+      /* ---------- page 3: 30 days + all areas ---------- */
+      doc.addPage(); band(10);
+      kicker("Keep going", M, 52, PLUM);
+      txt("Your 30-day plan", M, 84, 26, "h", INK);
+      y = 106;
+      var tw = (CW - 3 * 10) / 4, th = 0;
+      W.plan.forEach(function (p) { th = Math.max(th, hgt(p[1], 9.5, "n", tw - 28)); });
+      th += 74;
+      var tc = [[253, 226, 238], [243, 233, 255], [228, 242, 255], [232, 247, 225]];
+      W.plan.forEach(function (p, i) {
+        var tx = M + i * (tw + 10);
+        card(tx, y, tw, th, tc[i]);
+        txt(p[0], tx + 14, y + 30, 18, "h", INK);
+        txt(p[1], tx + 14, y + 50, 9.5, "n", [60, 60, 66], tw - 28);
+        doc.setDrawColor(120, 110, 130); doc.setLineWidth(0.9); doc.roundedRect(tx + tw - 26, y + 14, 13, 13, 3, 3, "S");
+      });
+      y += th + 30;
+
+      y = section("All your areas", y, [255, 90, 78]);
+      y += 4;
+      var aw = (CW - 2 * 10) / 3, ah = 0;
+      W.areas.forEach(function (a, i) { ah = Math.max(ah, hgt(W.D[a.key][W.lvl(W.scores[i])], 8.8, "n", aw - 28)); });
+      ah += 46;
+      W.areas.forEach(function (a, i) {
+        var c = hex(a.color), ax = M + (i % 3) * (aw + 10), ay = y + Math.floor(i / 3) * (ah + 10);
+        card(ax, ay, aw, ah, mix(c, .9)); doc.setFillColor.apply(doc, c); doc.roundedRect(ax, ay, aw, 5, 2.5, 2.5, "F");
+        txt(a.name, ax + 14, ay + 24, 10, "b", INK);
+        txt(String(W.scores[i]), ax + aw - 14, ay + 26, 18, "h", c.map(function (v) { return v * .7; }), null, "right");
+        txt(W.D[a.key][W.lvl(W.scores[i])], ax + 14, ay + 40, 8.8, "n", [70, 70, 76], aw - 28);
+      });
+      y += 3 * (ah + 10) + 14;
+
+      var nh = PH - 60 - y;
+      if (nh > 70) {
+        card(M, y, CW, nh, [252, 250, 255], LINE);
+        kicker("My notes", M + 18, y + 22);
+        doc.setDrawColor(222, 214, 232); doc.setLineWidth(0.6);
+        for (var nl = y + 46; nl < y + nh - 10; nl += 22) doc.line(M + 18, nl, PW - M - 18, nl);
+      }
+      txt("Based on the Wheel of Life coaching exercise and the GROW model. General guidance, not professional advice.", PW / 2, PH - 48, 7.5, "n", MUTED, null, "center");
+      footer(3);
       doc.save("my-wheel-of-life.pdf");
     }); });
   }
