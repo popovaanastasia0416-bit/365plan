@@ -392,7 +392,7 @@ body{font-size:17px}
         <div class="wq-intro">
       <h1>How balanced is your life?</h1>
     </div>
-        <div id="wq-progress"><p class="wq-big"><span id="wq-count">0</span> of 9 areas rated</p><p class="wq-muted" id="wq-muted-hint">Click a ring: 1 in the centre, 10 at the edge.</p></div>
+        <div id="wq-progress"><p class="wq-muted" id="wq-muted-hint">Click a ring: 1 in the centre, 10 at the edge.</p></div>
         <ol class="wq-list" id="wq-list"></ol>
         <a class="wq-btn wq-below" id="wq-below" href="#wq-report" hidden>See your results ↓</a>
         
@@ -493,7 +493,7 @@ body{font-size:17px}
   function render() {
     AREAS.forEach(function (a, j) { draw(j, scores[j]); });
     var done = scores.filter(function (s) { return s > 0; }).length;
-    document.getElementById("wq-count").textContent = done;
+    var cnt = document.getElementById("wq-count"); if (cnt) cnt.textContent = done;
     var list = document.getElementById("wq-list"); list.innerHTML = "";
     AREAS.forEach(function (a, j) {
       var li = document.createElement("li");
