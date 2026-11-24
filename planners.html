@@ -424,10 +424,10 @@ footer .ft{padding-bottom:56px}
 
 <script>
 /* Put your payment link in BUY_URL and your Pinterest profile in PINTEREST_URL. */
-const BUY_URL = "";
+const BUY_URL = "https://payhip.com/b/rEA5v";
 const PINTEREST_URL = "";
 document.querySelectorAll("[data-buy]").forEach(function (a) {
-  if (BUY_URL) { a.href = BUY_URL; } else { a.addEventListener("click", function (e) { e.preventDefault(); alert("Payment link is not set yet."); }); }
+  if (BUY_URL) { a.href = BUY_URL; a.target = "_blank"; a.rel = "noopener"; } else { a.addEventListener("click", function (e) { e.preventDefault(); alert("Payment link is not set yet."); }); }
 });
 
 var dlg = document.getElementById("look");
