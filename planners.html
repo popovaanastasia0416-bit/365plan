@@ -469,7 +469,7 @@ dlg.querySelectorAll(".sw").forEach(function (b) { b.addEventListener("click", f
 })();
 
 /* Color variants: set a separate checkout link per color if you have them (Gumroad variants or separate products). */
-const BUY_URLS = { bw: "", lime: "", cherry: "" };
+const BUY_URLS = { bw: "https://payhip.com/b/dE1Yx", lime: "https://payhip.com/b/3M9JS", cherry: "https://payhip.com/b/rEA5v" };
 let currentTheme = "cherry";
 document.querySelectorAll(".sw").forEach(function (b) {
   b.addEventListener("click", function () {
@@ -480,9 +480,8 @@ document.querySelectorAll(".sw").forEach(function (b) {
     img.src = "img/" + (typeof PAGES !== "undefined" ? PAGES[pageIdx] : "cover") + "-" + currentTheme + ".jpg";
     img.alt = "The Debt Payoff Planner cover, " + b.dataset.name;
     document.getElementById("color-name").textContent = b.dataset.name;
-    var buy = document.querySelector("[data-buy]");
     var u = BUY_URLS[currentTheme] || BUY_URL;
-    if (u) buy.href = u;
+    if (u) document.querySelectorAll("[data-buy]").forEach(function (buy) { buy.href = u; buy.target = "_blank"; buy.rel = "noopener"; });
   });
 });
 
